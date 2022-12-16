@@ -1,0 +1,10 @@
+// app global css in SCSS form
+
+@font-face {
+  font-family: mainFont;
+  src: url(./fonts/FredokaOne-Regular.ttf);
+}
+
+.main-font {
+  font-family: 'mainFont';
+}
