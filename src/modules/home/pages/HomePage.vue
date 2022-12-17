@@ -1,23 +1,50 @@
 <template>
-  <q-page>
-    <q-header class="flex justify-center items-end header">
-      <div class="text-h2 main-font">MegaIQ</div>
-      <!-- <q-tabs align="left">
-          <q-route-tab to="/page1" label="Page One" />
-          <q-route-tab to="/page2" label="Page Two" />
-          <q-route-tab to="/page3" label="Page Three" />
-        </q-tabs> -->
-      <q-toolbar class="bg-blur" elevated>
-        <q-toolbar-title> Toolbar </q-toolbar-title>
-        <q-btn dense flat round icon="las la-cog" />
-        <q-btn dense flat round icon="las la-user-circle" />
-      </q-toolbar>
-    </q-header>
+  <q-header class="bg-blur">
+    <q-toolbar class="bg-blur">
+      <q-toolbar-title> MegaIQ </q-toolbar-title>
+      <q-btn dense flat round icon="las la-cog" />
+      <q-btn dense flat round icon="las la-user-circle" />
+    </q-toolbar>
+  </q-header>
 
-    <!-- <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-        <q-item-label header> Essential Links </q-item-label>
-      </q-drawer> -->
-  </q-page>
+  <div class="text-h2 main-font header-banner flex flex-center text-white">
+    MegaIQ
+  </div>
+
+  <div class="layout-container flex justify-center q-pa-lg">
+    <q-layout view="hHh lpr fFf" class="content-layout flex align-center">
+      <q-drawer
+        side="left"
+        :width="250"
+        :breakpoint="500"
+        content-class="bg-grey-3"
+        class="bg-indigo-4"
+        show-if-above
+      >
+        <p>Friends</p>
+      </q-drawer>
+
+      <q-page-container
+        ><p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat
+          inventore nemo fugit dolorum asperiores neque odit facere laboriosam,
+          aliquid tenetur sint quisquam, temporibus nobis! Ex cumque quae maxime
+          dignissimos nam!
+        </p></q-page-container
+      >
+
+      <q-drawer
+        side="right"
+        :width="250"
+        :breakpoint="500"
+        content-class="bg-grey-3"
+        class="bg-indigo-4"
+        show-if-above
+      >
+        <p>Filter results</p>
+      </q-drawer>
+    </q-layout>
+  </div>
 </template>
 
 <script lang="ts">
@@ -42,7 +69,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.header {
+.bg-blur {
+  background-color: rgba(29, 31, 158, 0.267);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.164);
+}
+.header-banner {
+  margin-top: -50px;
   height: 70vh;
   background-image: linear-gradient(
       180deg,
@@ -52,9 +85,8 @@ export default defineComponent({
     url('https://4.bp.blogspot.com/-u7xOINjjawk/XHKV0l9lc8I/AAAAAAAAC0Y/RR3HQuyUIjsPqkPhwPTnGfA1f582YPvlgCKgBGAs/w0/blue-red-smoke-abstract-4k-53.jpg');
   background-size: cover;
 }
-.bg-blur {
-  background-color: rgba(0, 0, 255, 0.295);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 -5px 10px rgba(0, 0, 255, 0.301);
+.content-layout {
+  max-width: 1600px;
+  padding: 20px;
 }
 </style>

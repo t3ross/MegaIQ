@@ -1,12 +1,5 @@
 <template>
-  <q-layout view="hHh lpr bbb">
-    <!-- <q-header reveal elevated bordered>
-      <q-toolbar class="bg-purple text-white">
-        <q-toolbar-title> Toolbar </q-toolbar-title>
-        <q-btn dense flat round icon="las la-cog" />
-        <q-btn dense flat round icon="las la-user-circle" />
-      </q-toolbar>
-    </q-header> -->
+  <q-layout view="hHh lpr fFf">
     <q-page-container>
       <router-view />
     </q-page-container>
