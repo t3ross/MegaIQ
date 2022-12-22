@@ -24,12 +24,10 @@
         :width="250"
         :breakpoint="500"
         content-style="laterals"
-        show-if-above
-      >
+        show-if-above>
         <div class="laterals left-lateral">
           <p
-            class="q-px-md q-pt-md q-mb-none text-h5 text-white text-weight-regular"
-          >
+            class="q-px-md q-pt-md q-mb-none text-h5 text-white text-weight-regular">
             Filtrar resultados
           </p>
 
@@ -45,14 +43,12 @@
               :options="filterType"
               color="indigo-4"
               type="checkbox"
-              class="filter-checkboxes q-ml-auto q-mr-md"
-            />
+              class="filter-checkboxes q-ml-auto q-mr-md" />
 
             <!-- Features Checkboxes -->
 
             <p
-              class="q-pt-lg q-mb-xs text-subtitle1 text-white text-weight-regular"
-            >
+              class="q-pt-lg q-mb-xs text-subtitle1 text-white text-weight-regular">
               Características
             </p>
             <q-option-group
@@ -60,14 +56,12 @@
               :options="filterFeatures"
               color="indigo-4"
               type="checkbox"
-              class="filter-checkboxes q-ml-auto q-mr-md"
-            />
+              class="filter-checkboxes q-ml-auto q-mr-md" />
 
             <!-- Subjects checkboxes -->
 
             <p
-              class="q-pt-lg q-mb-xs text-subtitle1 text-white text-weight-regular"
-            >
+              class="q-pt-lg q-mb-xs text-subtitle1 text-white text-weight-regular">
               Asignaturas
             </p>
             <q-option-group
@@ -75,8 +69,7 @@
               :options="filterSubjects"
               color="indigo-4"
               type="checkbox"
-              class="filter-checkboxes q-ml-auto q-mr-md"
-            />
+              class="filter-checkboxes q-ml-auto q-mr-md" />
           </div>
         </div>
       </q-drawer>
@@ -88,8 +81,7 @@
         :width="250"
         :breakpoint="500"
         content-style="laterals"
-        show-if-above
-      >
+        show-if-above>
         <div class="laterals right-lateral q-pa-md">
           <p class="text-h5 text-white text-weight-regular">Amigos</p>
 
@@ -100,22 +92,19 @@
               class="no-padding friend-item"
               :class="{ 'last-friend': friend.id === '3' }"
               v-for="friend in friendsList"
-              :key="friend.id"
-            >
+              :key="friend.id">
               <q-item-section avatar>
                 <q-avatar size="56px">
                   <img :src="friend.pfp" />
                   <div
                     class="online-dot"
-                    v-if="friend.status === 'active'"
-                  ></div>
+                    v-if="friend.status === 'active'"></div>
                 </q-avatar>
               </q-item-section>
 
               <q-item-section
                 class="friend-info text-white"
-                :class="{ 'first-friend': friend.id === '1' }"
-              >
+                :class="{ 'first-friend': friend.id === '1' }">
                 {{ friend.name }}
                 <br />
 
@@ -125,8 +114,7 @@
                       friend.msgSeen
                         ? 'fa-solid fa-circle-check'
                         : 'fa-regular fa-circle-check'
-                    "
-                  ></i>
+                    "></i>
                   {{ friend.lastMsg }}</span
                 >
               </q-item-section>
@@ -137,14 +125,59 @@
 
       <!-- ----Main content---- -->
 
-      <q-page-container class=""
-        ><p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat
-          inventore nemo fugit dolorum asperiores neque odit facere laboriosam,
-          aliquid tenetur sint quisquam, temporibus nobis! Ex cumque quae maxime
-          dignissimos nam!
-        </p></q-page-container
-      >
+      <q-page-container class="main full-height">
+        <div class="main-container">
+          <div
+            class="main-post q-pa-md border"
+            v-for="post in mainPosts"
+            :key="post.postId">
+            <div class="post-header"></div>
+            <q-toolbar class="post-title text-h5 q-px-none">
+              <q-toolbar-title class="column justify-between">
+                <div class="q-pt-sm">
+                  {{ post.postTitle }} -
+                  <span class="post-author vertical-middle text-subtitle1">
+                    <q-avatar size="20px" class="q-mb-xs"
+                      ><img
+                        :src="post.postAuthorPfp"
+                        alt="{{ post.postAuthor }} profile image"
+                    /></q-avatar>
+                    {{ post.postAuthor }}</span
+                  >
+                </div>
+                <div class="post-description text-grey-8 q-pt-sm">
+                  {{ post.postDescription }}
+                </div>
+              </q-toolbar-title>
+
+              <div class="post- flex q-gutter-md">
+                <div class="post-like-count column flex-center">
+                  <q-btn
+                    dense
+                    flat
+                    round
+                    icon="fa-solid fa-heart fa-lg"
+                    size="20px"
+                    class="text-indigo-2" />
+                  {{ post.postLikeCount }}
+                </div>
+                <div class="post-dislike-count column flex-center">
+                  <q-btn
+                    dense
+                    flat
+                    round
+                    icon="fa-solid fa-heart-crack fa-lg"
+                    size="20px"
+                    class="text-indigo-2" />
+                  {{ post.postDislikeCount }}
+                </div>
+              </div>
+            </q-toolbar>
+
+            <q-separator spaced />
+          </div>
+        </div>
+      </q-page-container>
     </q-layout>
   </div>
 </template>
@@ -249,12 +282,29 @@ export default defineComponent({
           lastMsgDate: '',
         },
       ],
+      mainPosts: [
+        {
+          postId: '1',
+          postTitle: 'Cómo pasar trigo',
+          postImage:
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Trigonometria_02.svg/1200px-Trigonometria_02.svg.png',
+          postDescription:
+            'Guía básica para entender los conceptos principales de trigonometría.',
+          postAuthor: 'Andres Walteros',
+          postAuthorPfp:
+            'https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg',
+          postDate: '1 month ago',
+          postLikeCount: '23',
+          postDislikeCount: '2',
+        },
+      ],
     };
   },
 });
 </script>
 
 <style scoped lang="scss">
+//----------------Header
 .bg-blur {
   backdrop-filter: blur(15px);
   background-color: rgba($primary, 0.2);
@@ -271,9 +321,13 @@ export default defineComponent({
   height: 70vh;
   margin-top: -50px;
 }
+
+//----------------Main
 .layout-content {
   max-width: 1600px;
 }
+
+//----Laterals
 .laterals {
   background: linear-gradient(
     133deg,
@@ -283,11 +337,12 @@ export default defineComponent({
   width: 100%;
 }
 
+//Left-lateral
 .left-lateral {
   border-radius: 0 8px 8px 0;
 }
 .filter-checkboxes {
-  background-color: $white;
+  background-color: $white-blue;
   border-radius: 8px;
   padding: 8px 0;
 }
@@ -295,11 +350,12 @@ export default defineComponent({
   margin-bottom: 12px;
 }
 
+//Right-lateral
 .right-lateral {
   border-radius: 8px 0 0 8px;
 }
 .friend-list {
-  border-top: 1px solid rgba($white, 0.719);
+  border-top: 1px solid rgba($white-blue, 0.719);
 
   .friend-item {
     height: 76px;
@@ -308,7 +364,7 @@ export default defineComponent({
     height: 76px;
   }
   .friend-info {
-    border-top: 1px solid rgba($white, 0.719);
+    border-top: 1px solid rgba($white-blue, 0.719);
     line-height: 20px;
     font-size: 18px;
   }
@@ -321,15 +377,43 @@ export default defineComponent({
     width: 12px;
     height: 12px;
     background: #99cc00;
-    outline: 3px solid $primary;
+    outline: 3px solid rgb(210, 225, 255);
     position: absolute;
     bottom: 2%;
     right: 2%;
     border-radius: 100%;
   }
   .last-friend {
-    border-bottom: 1px solid rgba($white, 0.719);
+    border-bottom: 1px solid rgba($white-blue, 0.719);
     margin-bottom: 12px;
   }
+}
+
+//-----Main
+
+.main {
+  padding: 16px !important;
+  margin: 0 266px;
+  border: 1px solid $white;
+  border-radius: 8px;
+  width: 90%;
+}
+
+//-----Posts
+
+.post-author {
+}
+.post-description {
+  font-size: 14px;
+}
+.post-like-count,
+.post-dislike-count {
+  font-size: 18px;
+  background: $white;
+  border-radius: 6px;
+}
+.main-post {
+  border: 1px solid $light-grey;
+  border-radius: 8px;
 }
 </style>
