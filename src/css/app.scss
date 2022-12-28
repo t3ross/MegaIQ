@@ -1,10 +1,41 @@
 // app global css in SCSS form
 
 @font-face {
-  font-family: mainFont;
+  font-family: headerFont;
   src: url(./fonts/FredokaOne/FredokaOne-Regular.ttf);
 }
+@font-face {
+  font-family: textFontMedium;
+  src: url(./fonts/Poppins/Poppins-Medium.ttf);
+}
+@font-face {
+  font-family: textFontLight;
+  src: url(./fonts/Poppins/Poppins-Light.ttf);
+}
+@font-face {
+  font-family: textFontBold;
+  src: url(./fonts/Poppins/Poppins-Bold.ttf);
+}
 
-.main-font {
-  font-family: 'mainFont';
+.header-font {
+  font-family: 'headerFont';
+}
+
+.text-font-medium {
+  font-family: 'textFontMedium';
+}
+.text-font-light {
+  font-family: 'textFontLight';
+}
+
+.text-font-bold {
+  font-family: 'textFontBold';
+}
+
+.white-border {
+  border: 1px solid $white;
+  border-radius: 8px;
+}
+body {
+  overflow-x: hidden;
 }
