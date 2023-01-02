@@ -17,6 +17,7 @@
     "pinia": "^2.0.28",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
+    "vue-intersection-observer": "^0.1.9",
     "vue-router": "^4.0.0"
   },
   "devDependencies": {

@@ -3,15 +3,38 @@
 
   <q-header class="bg-blur">
     <q-toolbar class="bg-blur">
-      <q-toolbar-title> MegaIQ </q-toolbar-title>
-      <q-btn dense flat round icon="las la-cog" />
-      <q-btn dense flat round icon="las la-user-circle" />
+      <q-toolbar-title>
+        <div ref="toolbarTitle" class="toolbar-title header-font">MegaIQ</div>
+      </q-toolbar-title>
+      <div v-if="userLogged">
+        <q-btn dense flat round icon="las la-cog" />
+        <q-btn dense flat round icon="las la-user-circle" />
+      </div>
+      <div
+        v-else
+        class="row q-gutter-x-xl text-font-medium row flex-center q-pr-lg">
+        <a
+          class="toolbar-buttons toolbar-login text-white text-uppercase"
+          ref="toolbarButtonLogin"
+          href="#"
+          >Inicia sesión!</a
+        >
+        <button
+          class="toolbar-buttons toolbar-register q-btn q-btn-item non-selectable no-outline q-btn--standard bg-primary text-white q-btn--actionable justify-center"
+          ref="toolbarButtonRegister"
+          type="button"
+          v-ripple>
+          Registrate!
+        </button>
+      </div>
     </q-toolbar>
   </q-header>
 
   <div
-    class="text-h1 header-font header-banner column q-gutter-y-xl flex-center text-white">
-    <div>MegaIQ</div>
+    class="header-banner text-h1 header-font column q-gutter-y-xl flex-center text-white"
+    ref="headerBanner"
+    @mousemove="headerBannerParallax">
+    <div ref="headerBannerTitle" class="header-banner-title">MegaIQ</div>
     <p class="header-text text-body1 text-font-medium">
       Repasa conceptos, aprende cosas nuevas y comparte con demás estudiantes e
       instructores sobre temas académicos. MegaIQ está diseñado para
@@ -22,69 +45,34 @@
   <!-- ----------Main---------- -->
 
   <div class="layout-container flex q-py-md">
-    <q-layout view="hHh lpr fFf" class="layout-content flex">
-      <!-- ----Left drawer---- -->
+    <q-layout view="hHh lpr fFf" class="layout-content">
+      <!-- Aside -->
 
       <q-drawer
         side="left"
-        :width="250"
+        :width="280"
         :breakpoint="500"
         content-style="laterals"
+        class="q-gutter-y-md"
         show-if-above>
-        <div class="laterals left-lateral">
-          <p
-            class="q-px-md q-pt-md q-mb-none text-h5 text-white text-weight-regular">
-            Filtrar resultados
-          </p>
+        <!-- Friend drawer -->
 
-          <!-- Type checkboxes -->
+        <div class="friend-lateral laterals q-pa-md">
+          <p class="text-h4 text-white text-weight-regular">Amigos</p>
 
-          <div class="q-pa-md">
-            <p class="q-mb-xs text-subtitle1 text-white text-weight-regular">
-              Tipo
-            </p>
-
-            <q-option-group
-              v-model="group"
-              :options="filterType"
-              color="indigo-4"
-              type="checkbox"
-              class="filter-checkboxes q-ml-auto q-mr-md" />
-
-            <!-- Subjects checkboxes -->
-
-            <p
-              class="q-pt-lg q-mb-xs text-subtitle1 text-white text-weight-regular">
-              Asignaturas
-            </p>
-
-            <q-option-group
-              v-model="group"
-              :options="filterSubjects"
-              color="indigo-4"
-              type="checkbox"
-              class="filter-checkboxes q-ml-auto q-mr-md" />
-
-            <q-btn
-              color="secondary"
-              label="Aplicar"
-              class="apply-btn q-mt-md" />
+          <div v-if="friendsList" class="no-friends column flex-center">
+            No tienes ningún amigo aún... <br />
+            <a href="#">Busca gente aquí</a>
+            <q-img
+              src="~assets/coolface.png"
+              width="140px"
+              :ratio="1"
+              class="q-mt-md no-friend-img"
+              spinner-color="primary"
+              spinner-size="82px" />
           </div>
-        </div>
-      </q-drawer>
 
-      <!-- ----Right drawer---- -->
-
-      <q-drawer
-        side="right"
-        :width="250"
-        :breakpoint="500"
-        content-style="laterals"
-        show-if-above>
-        <div class="laterals right-lateral q-pa-md relative-position">
-          <p class="text-h5 text-white text-weight-regular">Amigos</p>
-
-          <q-list class="friend-list">
+          <q-list class="friend-list" v-else>
             <q-item
               clickable
               v-ripple:white
@@ -119,6 +107,50 @@
               </q-item-section>
             </q-item>
           </q-list>
+        </div>
+
+        <!-- Filter drawer -->
+
+        <div class="filter-lateral laterals q-pa-md">
+          <p class="text-h4 text-white text-weight-regular">
+            Filtrar resultados
+          </p>
+
+          <!-- Filter checkboxes -->
+
+          <div>
+            <p class="type-checkboxes text-h5 text-white text-weight-regular">
+              Tipo
+            </p>
+
+            <!-- Type checkboxes -->
+
+            <q-option-group
+              v-model="group"
+              :options="filterType"
+              color="indigo-4"
+              type="checkbox"
+              class="filter-checkboxes q-ml-auto" />
+
+            <!-- Subjects checkboxes -->
+
+            <p
+              class="type-checkboxes q-pt-lg text-h5 text-white text-weight-regular">
+              Asignaturas
+            </p>
+
+            <q-option-group
+              v-model="group"
+              :options="filterSubjects"
+              color="indigo-4"
+              type="checkbox"
+              class="filter-checkboxes q-ml-auto" />
+
+            <q-btn
+              color="secondary"
+              label="Aplicar"
+              class="apply-btn q-mt-lg full-width" />
+          </div>
         </div>
       </q-drawer>
 
@@ -170,7 +202,7 @@
             <q-toolbar-title class="column justify-between">
               <div class="q-pt-sm">
                 {{ post.postTitle }} -
-                <span class="post-author vertical-middle text-subtitle1">
+                <span class="post-author vertical-middle text-h5">
                   <q-avatar size="20px" class="q-mb-xs"
                     ><img
                       :src="post.postAuthorPfp"
@@ -227,7 +259,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -301,9 +333,56 @@ export default defineComponent({
       },
     ];
 
+    const headerBanner = ref();
+
+    const headerBannerTitle = ref();
+
+    const toolbarTitle = ref();
+
+    const toolbarButtonLogin = ref();
+    const toolbarButtonRegister = ref();
+
+    const headerBannerParallax = (event: any) => {
+      let x = event.clientX / 28;
+      let y = event.clientY / 28;
+
+      headerBanner.value.style.backgroundPosition = `-${x}px -${y}px`;
+    };
+
+    onMounted(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            toolbarTitle.value.classList.remove('toolbar-title-enter');
+            toolbarButtonLogin.value.classList.remove('toolbar-buttons-enter');
+            toolbarButtonRegister.value.classList.remove(
+              'toolbar-buttons-enter'
+            );
+          } else {
+            toolbarTitle.value.classList.add('toolbar-title-enter');
+            toolbarButtonLogin.value.classList.add('toolbar-buttons-enter');
+            toolbarButtonRegister.value.classList.add('toolbar-buttons-enter');
+          }
+        },
+        {
+          rootMargin: '0px -100px',
+        }
+      );
+
+      const header = document.querySelector('.header-banner-title');
+      observer.observe(header as Element);
+    });
+
     return {
-      group: ref(['op1']),
+      headerBannerTitle,
+      toolbarTitle,
+      toolbarButtonLogin,
+      toolbarButtonRegister,
+      headerBanner,
+      headerBannerParallax,
       mainPosts,
+      group: ref(['op1']),
+      userLogged: false,
 
       filterType: [
         {
@@ -346,35 +425,7 @@ export default defineComponent({
           value: 'economy',
         },
       ],
-      friendsList: [
-        {
-          name: 'Michael',
-          pfp: 'https://cdn.quasar.dev/img/boy-avatar.png',
-          id: '1',
-          status: 'active',
-          lastMsg: 'Brooo',
-          msgSeen: true,
-          lastMsgDate: '12:30',
-        },
-        {
-          name: 'Andrés Walteros',
-          pfp: 'https://i.pinimg.com/736x/2d/ef/82/2def8264083dab1a4788e0d0e3b47c8d.jpg',
-          id: '2',
-          status: 'active',
-          lastMsg: 'Holaa',
-          msgSeen: false,
-          lastMsgDate: '',
-        },
-        {
-          name: 'Valen',
-          pfp: 'https://i.redd.it/ij5qucry9mk81.jpg',
-          id: '3',
-          status: 'inactive',
-          lastMsg: 'Suba al gato',
-          msgSeen: true,
-          lastMsgDate: '',
-        },
-      ],
+      friendsList: [],
     };
   },
 });
@@ -386,29 +437,90 @@ export default defineComponent({
   backdrop-filter: blur(10px);
   background-color: rgba($primary, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  height: 80px;
+
+  .toolbar-title {
+    font-size: 30px;
+    transition: all 0.2s;
+    margin-left: -10%;
+  }
+
+  .toolbar-buttons {
+    margin-top: -130px;
+  }
+  .toolbar-login {
+    transition: all 0.1s;
+  }
+
+  .toolbar-register {
+    transition: all 0.1s;
+    scale: 1.2;
+    border-radius: 20px;
+  }
+
+  // Animations
+
+  .toolbar-title-enter {
+    transform: translate(10%, 0);
+  }
+  .toolbar-login:hover {
+    transform: scale(1.1);
+  }
+  .toolbar-register:hover {
+    transform: scale(1.1);
+  }
+  .toolbar-buttons-enter {
+    margin-top: 0;
+  }
 }
 .header-banner {
-  background-image: linear-gradient(
-      180deg,
-      rgba(31, 50, 219, 0.747) 10%,
-      rgba(0, 212, 255, 0) 100%
-    ),
-    url('https://4.bp.blogspot.com/-u7xOINjjawk/XHKV0l9lc8I/AAAAAAAAC0Y/RR3HQuyUIjsPqkPhwPTnGfA1f582YPvlgCKgBGAs/w0/blue-red-smoke-abstract-4k-53.jpg');
-  background-size: cover;
+  transition: all 0.1s;
+  background-image: url('../../../assets/red-blue-bg.png');
+  background-size: 105%;
   height: 90vh;
-  margin-top: -50px;
-}
-.header-text {
-  width: 800px;
-}
-
-#header-video::-webkit-media-controls {
-  display: none;
+  margin-top: -80px;
+  .header-text {
+    width: 800px;
+  }
 }
 //----------------Main
 .layout-content {
-  max-width: 1600px;
-  min-height: 860px !important;
+  .main {
+    // padding: 0 !important;
+    margin: 0 16px;
+
+    gap: 20px;
+
+    .selCont-container {
+      gap: 16px;
+      .selCont-option {
+        width: 200px;
+        padding: 10px;
+      }
+      .selCont-option span {
+        font-size: 28px;
+        padding: 4px 0 12px 0;
+        color: rgba($primary, 0.5);
+      }
+      .selCont-option:hover {
+        background: rgba($info, 0.1);
+      }
+    }
+    //-----Posts
+
+    .post-description {
+      font-size: 14px;
+    }
+    .post-like-count,
+    .post-dislike-count {
+      font-size: 18px;
+      background: $white;
+      border-radius: 6px;
+    }
+    .blog-header-separator {
+      background: $white;
+    }
+  }
 }
 
 //----Laterals
@@ -416,14 +528,17 @@ export default defineComponent({
   background: linear-gradient(
     133deg,
     rgba(121, 135, 203, 0.7) 0%,
-    rgba(52, 88, 255, 0.7) 100%
+    rgba(88, 119, 255, 0.7) 100%
   );
   width: 100%;
-  position: fixed;
+  position: sticky;
+  .apply-btn {
+    width: 200px;
+    border-radius: 8px;
+  }
 }
-
-//Left-lateral
-.left-lateral {
+//subjects-lateral
+.filter-lateral {
   border-radius: 0 8px 8px 0;
 
   .filter-checkboxes {
@@ -434,87 +549,51 @@ export default defineComponent({
   .filter-checkboxes:last-child {
     margin-bottom: 12px;
   }
-  .apply-btn {
-    width: 200px;
-  }
 }
+//friend-lateral
+.friend-lateral {
+  border-radius: 0 8px 8px 0;
+  background: linear-gradient(
+    133deg,
+    rgba(121, 135, 203, 0.7) 0%,
+    rgba(108, 135, 255, 0.7) 100%
+  );
 
-//Right-lateral
-.right-lateral {
-  border-radius: 8px 0 0 8px;
-}
-.friend-list {
-  border-top: 1px solid rgba($white-blue, 0.719);
-
-  .friend-item {
-    height: 76px;
+  .no-friend-img {
+    opacity: 0.6;
   }
-  .friend-item:last-child {
-    height: 76px;
-  }
-  .friend-info {
+  .friend-list {
     border-top: 1px solid rgba($white-blue, 0.719);
-    line-height: 20px;
-    font-size: 18px;
-  }
-  .first-friend {
-    border-top: none;
-    color: red;
-  }
-
-  .online-dot {
-    width: 12px;
-    height: 12px;
-    background: #99cc00;
-    outline: 3px solid rgb(210, 225, 255);
-    position: absolute;
-    bottom: 2%;
-    right: 2%;
-    border-radius: 100%;
-  }
-  .last-friend {
-    border-bottom: 1px solid rgba($white-blue, 0.719);
-    margin-bottom: 12px;
-  }
-}
-
-//-----Main
-
-.main {
-  padding: 0 !important;
-  margin: 0 266px;
-
-  gap: 20px;
-
-  .selCont-container {
-    gap: 16px;
-    .selCont-option {
-      width: 200px;
-      padding: 10px;
+    .friend-item {
+      height: 76px;
     }
-    .selCont-option span {
-      font-size: 28px;
-      padding: 4px 0 12px 0;
-      color: rgba($primary, 0.5);
+    .friend-item:last-child {
+      height: 76px;
     }
-    .selCont-option:hover {
-      background: rgba($info, 0.1);
+    .friend-info {
+      border-top: 1px solid rgba($white-blue, 0.719);
+      line-height: 20px;
+      font-size: 18px;
+    }
+    .first-friend {
+      border-top: none;
+      color: red;
+    }
+
+    .online-dot {
+      width: 12px;
+      height: 12px;
+      background: #99cc00;
+      outline: 3px solid rgb(210, 225, 255);
+      position: absolute;
+      bottom: 2%;
+      right: 2%;
+      border-radius: 100%;
+    }
+    .last-friend {
+      border-bottom: 1px solid rgba($white-blue, 0.719);
+      margin-bottom: 12px;
     }
   }
-}
-
-//-----Posts
-
-.post-description {
-  font-size: 14px;
-}
-.post-like-count,
-.post-dislike-count {
-  font-size: 18px;
-  background: $white;
-  border-radius: 6px;
-}
-.blog-header-separator {
-  background: $white;
 }
 </style>

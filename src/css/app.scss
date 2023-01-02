@@ -1,5 +1,18 @@
 // app global css in SCSS form
+* {
+  margin: 0;
+  padding: 0;
 
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+html {
+  font-size: 62.5%;
+}
+body {
+  overflow-x: hidden;
+}
 @font-face {
   font-family: headerFont;
   src: url(./fonts/FredokaOne/FredokaOne-Regular.ttf);
@@ -19,10 +32,13 @@
 
 .header-font {
   font-family: 'headerFont';
+  font-size: 9rem;
 }
 
 .text-font-medium {
   font-family: 'textFontMedium';
+  font-size: 1.6rem;
+  line-height: 1.7rem;
 }
 .text-font-light {
   font-family: 'textFontLight';
@@ -35,7 +51,4 @@
 .white-border {
   border: 1px solid $white;
   border-radius: 8px;
-}
-body {
-  overflow-x: hidden;
 }
