@@ -14,32 +14,49 @@
         v-else
         class="row q-gutter-x-xl text-font-medium row flex-center q-pr-lg">
         <a
-          class="toolbar-buttons toolbar-login text-white text-uppercase"
+          class="enter-account-btn toolbar-btn toolbar-login text-white text-uppercase"
           ref="toolbarButtonLogin"
           href="#"
           >Inicia sesión!</a
         >
-        <button
-          class="toolbar-buttons toolbar-register q-btn q-btn-item non-selectable no-outline q-btn--standard bg-primary text-white q-btn--actionable justify-center"
+        <a
+          class="enter-account-btn toolbar-btn toolbar-register q-btn q-btn-item non-selectable no-outline q-btn--standard bg-primary text-white q-btn--actionable justify-center"
           ref="toolbarButtonRegister"
           type="button"
           v-ripple>
           Registrate!
-        </button>
+        </a>
       </div>
     </q-toolbar>
   </q-header>
 
   <div
-    class="header-banner text-h1 header-font column q-gutter-y-xl flex-center text-white"
+    class="header-banner text-h1 header-font column q-gutter-y-xl items-center justify-end text-white"
     ref="headerBanner"
-    @mousemove="headerBannerParallax">
+    @mousemove="headerBannerParallax"
+    @mouseleave="headerBannerLeave">
     <div ref="headerBannerTitle" class="header-banner-title">MegaIQ</div>
     <p class="header-text text-body1 text-font-medium">
       Repasa conceptos, aprende cosas nuevas y comparte con demás estudiantes e
       instructores sobre temas académicos. MegaIQ está diseñado para
       complementar y mejorar tu aprendizaje escolar!
     </p>
+    <div class="flex items-end self-end col-4">
+      <div
+        class="header-banner-btn text-font-medium flex flex-center q-pr-xl q-pb-lg q-gutter-x-xl">
+        <a
+          class="enter-account-btn toolbar-login text-white text-uppercase"
+          href="#"
+          >Inicia sesión!</a
+        >
+        <a
+          class="enter-account-btn toolbar-register q-btn q-btn-item non-selectable no-outline q-btn--standard bg-primary text-white q-btn--actionable justify-center"
+          type="button"
+          v-ripple>
+          Registrate!
+        </a>
+      </div>
+    </div>
   </div>
 
   <!-- ----------Main---------- -->
@@ -157,12 +174,11 @@
       <!-- ----Main content---- -->
 
       <q-page-container class="main full-height flex">
-        <!-- <q-scroll-area class="main-container q-gutter-y-md fit"> -->
         <div
-          class="selCont-container full-width row flex-center q-pa-md white-border">
+          class="filterContent-container full-width row flex-center q-pa-md white-border">
           <q-btn
             :ripple="{ early: false, color: 'indigo-3', keyCodes: [] }"
-            class="selCont-option col column flex-center selCont-top white-border"
+            class="filterContent-option col column flex-center filterContent-top white-border"
             stack
             unelevated>
             <span class="fa-solid fa-fire"></span>
@@ -170,7 +186,7 @@
           </q-btn>
           <q-btn
             :ripple="{ early: false, color: 'indigo-3', keyCodes: [] }"
-            class="selCont-option col column flex-center selCont-recent white-border"
+            class="filterContent-option col column flex-center filterContent-recent white-border"
             stack
             unelevated>
             <span class="fa-solid fa-star"></span>
@@ -178,7 +194,7 @@
           </q-btn>
           <q-btn
             :ripple="{ early: false, color: 'indigo-3', keyCodes: [] }"
-            class="selCont-option col column flex-center selCont-voted white-border"
+            class="filterContent-option col column flex-center filterContent-voted white-border"
             stack
             unelevated>
             <span class="fa-solid fa-heart"></span>
@@ -186,7 +202,7 @@
           </q-btn>
           <q-btn
             :ripple="{ early: false, color: 'indigo-3', keyCodes: [] }"
-            class="selCont-option col column flex-center selCont-more white-border"
+            class="filterContent-option col column flex-center filterContent-more white-border"
             stack
             unelevated>
             <span class="fa-solid fa-compass"></span>
@@ -252,7 +268,6 @@
             </div>
           </div>
         </div>
-        <!-- </q-scroll-area> -->
       </q-page-container>
     </q-layout>
   </div>
@@ -346,7 +361,16 @@ export default defineComponent({
       let x = event.clientX / 28;
       let y = event.clientY / 28;
 
+      headerBanner.value.style.animation = 'none';
       headerBanner.value.style.backgroundPosition = `-${x}px -${y}px`;
+    };
+
+    const headerBannerLeave = () => {
+      setTimeout(() => {
+        headerBanner.value.style.animation =
+          'headerBannerInitialPos 2s forwards';
+        // headerBanner.value.style.animation = 'headerBannerMove 2s infinite';
+      }, 1000);
     };
 
     onMounted(() => {
@@ -354,23 +378,28 @@ export default defineComponent({
         (entries) => {
           if (entries[0].isIntersecting) {
             toolbarTitle.value.classList.remove('toolbar-title-enter');
-            toolbarButtonLogin.value.classList.remove('toolbar-buttons-enter');
-            toolbarButtonRegister.value.classList.remove(
-              'toolbar-buttons-enter'
-            );
+            toolbarButtonLogin.value.classList.remove('toolbar-btn-enter');
+            toolbarButtonRegister.value.classList.remove('toolbar-btn-enter');
           } else {
             toolbarTitle.value.classList.add('toolbar-title-enter');
-            toolbarButtonLogin.value.classList.add('toolbar-buttons-enter');
-            toolbarButtonRegister.value.classList.add('toolbar-buttons-enter');
+            toolbarButtonLogin.value.classList.add('toolbar-btn-enter');
+            toolbarButtonRegister.value.classList.add('toolbar-btn-enter');
+          }
+
+          if (!entries[1].isIntersecting) {
+            console.log(entries[1]);
           }
         },
         {
-          rootMargin: '0px -100px',
+          rootMargin: '0px 0px 100px 0px',
         }
       );
 
-      const header = document.querySelector('.header-banner-title');
+      const header = document.querySelector('.header-banner');
       observer.observe(header as Element);
+
+      const headerBanner = document.querySelector('.header-banner-btn');
+      observer.observe(headerBanner as Element);
     });
 
     return {
@@ -380,6 +409,7 @@ export default defineComponent({
       toolbarButtonRegister,
       headerBanner,
       headerBannerParallax,
+      headerBannerLeave,
       mainPosts,
       group: ref(['op1']),
       userLogged: false,
@@ -444,32 +474,15 @@ export default defineComponent({
     transition: all 0.2s;
     margin-left: -10%;
   }
-
-  .toolbar-buttons {
-    margin-top: -130px;
-  }
-  .toolbar-login {
-    transition: all 0.1s;
-  }
-
-  .toolbar-register {
-    transition: all 0.1s;
-    scale: 1.2;
-    border-radius: 20px;
-  }
-
-  // Animations
-
   .toolbar-title-enter {
     transform: translate(10%, 0);
   }
-  .toolbar-login:hover {
-    transform: scale(1.1);
+
+  .toolbar-btn {
+    margin-top: -130px;
   }
-  .toolbar-register:hover {
-    transform: scale(1.1);
-  }
-  .toolbar-buttons-enter {
+
+  .toolbar-btn-enter {
     margin-top: 0;
   }
 }
@@ -477,12 +490,47 @@ export default defineComponent({
   transition: all 0.1s;
   background-image: url('../../../assets/red-blue-bg.png');
   background-size: 105%;
-  height: 90vh;
+  height: 70vh;
   margin-top: -80px;
+  animation: headerBannerMove 2s infinite;
   .header-text {
     width: 800px;
   }
+  .header-banner-btn {
+    scale: 1.1;
+  }
+
+  @keyframes headerBannerMove {
+    0% {
+      background-position: 0px 0px;
+    }
+    50% {
+      background-position: -20px -20px;
+    }
+    100% {
+      background-position: 0px 0px;
+    }
+  }
+  @keyframes headerBannerInitialPos {
+    0% {
+    }
+    100% {
+      background-position: 0px 0px;
+    }
+  }
 }
+.enter-account-btn {
+  transition: all 0.1s;
+  scale: 1.1;
+  letter-spacing: normal;
+}
+.enter-account-btn:hover {
+  scale: 1.2;
+}
+.toolbar-register {
+  border-radius: 20px;
+}
+
 //----------------Main
 .layout-content {
   .main {
@@ -491,18 +539,18 @@ export default defineComponent({
 
     gap: 20px;
 
-    .selCont-container {
+    .filterContent-container {
       gap: 16px;
-      .selCont-option {
+      .filterContent-option {
         width: 200px;
         padding: 10px;
       }
-      .selCont-option span {
+      .filterContent-option span {
         font-size: 28px;
         padding: 4px 0 12px 0;
         color: rgba($primary, 0.5);
       }
-      .selCont-option:hover {
+      .filterContent-option:hover {
         background: rgba($info, 0.1);
       }
     }
