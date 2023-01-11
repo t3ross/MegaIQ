@@ -2,61 +2,93 @@
   <!-- ----------Header---------- -->
 
   <q-header class="bg-blur">
-    <q-toolbar class="bg-blur">
-      <q-toolbar-title>
-        <div ref="toolbarTitle" class="toolbar-title header-font">MegaIQ</div>
+    <q-toolbar class="bg-blur row justify-between">
+      <q-toolbar-title shrink>
+        <div
+          ref="toolbarTitle"
+          class="toolbar-title header-font"
+          @click="addSearchBarClass()">
+          MegaIQ
+        </div>
       </q-toolbar-title>
-      <div v-if="userLogged">
-        <q-btn dense flat round icon="las la-cog" />
-        <q-btn dense flat round icon="las la-user-circle" />
-      </div>
-      <div
-        v-else
-        class="row q-gutter-x-xl text-font-medium row flex-center q-pr-lg">
-        <a
-          class="enter-account-btn toolbar-btn toolbar-login text-white text-uppercase"
-          ref="toolbarButtonLogin"
-          href="#"
-          >Inicia sesión!</a
-        >
-        <a
-          class="enter-account-btn toolbar-btn toolbar-register q-btn q-btn-item non-selectable no-outline q-btn--standard bg-primary text-white q-btn--actionable justify-center"
-          ref="toolbarButtonRegister"
-          type="button"
-          v-ripple>
-          Registrate!
-        </a>
+      <!-- ref="toolbarSearchBar" -->
+      <q-input
+        ref="toolbarSearchBar"
+        class="searchBar toolbar-searchBar toolbar-searchBar-enter white-border q-px-lg"
+        borderless
+        color="primary"
+        v-model="searchBar"
+        @focus="addSearchBarClass()"
+        type="text"
+        placeholder="Busca algún tema del que quieras investigar...">
+        <template v-slot:prepend>
+          <q-icon
+            name="fa-solid fa-magnifying-glass"
+            color="primary" /> </template
+      ></q-input>
+
+      <div class="column justify-end">
+        <div v-if="userLogged">
+          <q-btn dense flat round icon="las la-cog" />
+          <q-btn dense flat round icon="las la-user-circle" />
+        </div>
+        <div
+          v-else
+          class="row q-gutter-x-xl text-font-medium row flex-center no-wrap q-pr-lg">
+          <q-btn
+            class="enter-account-btn toolbar-btn toolbar-login text-uppercase"
+            ref="toolbarButtonLogin"
+            label="Inicia sesión!"
+            unelevated />
+          <q-btn
+            class="enter-account-btn toolbar-btn toolbar-register justify-center"
+            ref="toolbarButtonRegister"
+            color="primary"
+            label="Registrate!" />
+        </div>
       </div>
     </q-toolbar>
   </q-header>
 
   <div
-    class="header-banner text-h1 header-font column q-gutter-y-xl items-center justify-end text-white"
+    class="header-banner text-h1 column flex-center q-gutter-y-xl text-white"
     ref="headerBanner"
-    @mousemove="headerBannerParallax"
-    @mouseleave="headerBannerLeave">
-    <div ref="headerBannerTitle" class="header-banner-title">MegaIQ</div>
-    <p class="header-text text-body1 text-font-medium">
+    @mousemove="headerBannerParallax">
+    <div ref="headerBannerTitle" class="header-banner-title header-font">
+      MegaIQ
+    </div>
+    <p class="header-text text-body1 text-font-medium header-font">
       Repasa conceptos, aprende cosas nuevas y comparte con demás estudiantes e
       instructores sobre temas académicos. MegaIQ está diseñado para
       complementar y mejorar tu aprendizaje escolar!
     </p>
-    <div class="flex items-end self-end col-4">
+    <q-toolbar class="row flex-center q-gutter-x-md">
+      <q-toolbar-title>
+        <q-input
+          class="searchBar banner-searchBar white-border q-px-lg"
+          borderless
+          color="primary"
+          type="text"
+          v-model="searchBar"
+          placeholder="Busca algún tema del que quieras investigar...">
+          <template v-slot:prepend>
+            <q-icon
+              name="fa-solid fa-magnifying-glass"
+              color="primary" /> </template
+        ></q-input>
+      </q-toolbar-title>
       <div
-        class="header-banner-btn text-font-medium flex flex-center q-pr-xl q-pb-lg q-gutter-x-xl">
-        <a
-          class="enter-account-btn toolbar-login text-white text-uppercase"
-          href="#"
-          >Inicia sesión!</a
-        >
-        <a
-          class="enter-account-btn toolbar-register q-btn q-btn-item non-selectable no-outline q-btn--standard bg-primary text-white q-btn--actionable justify-center"
-          type="button"
-          v-ripple>
-          Registrate!
-        </a>
+        class="header-banner-btn text-font-medium flex flex-center q-gutter-x-md">
+        <q-btn
+          class="enter-account-btn text-uppercase"
+          label="Inicia sesión!"
+          unelevated />
+        <q-btn
+          color="primary"
+          label="Registrate!"
+          class="enter-account-btn justify-center" />
       </div>
-    </div>
+    </q-toolbar>
   </div>
 
   <!-- ----------Main---------- -->
@@ -264,7 +296,7 @@
               width="530"
               class="bg-grey-1 q-my-lg q-pa-sm" />
             <div>
-              {{ post.postContentFilter() }}
+              {{ postContentFilter(post.postContent) }}
             </div>
           </div>
         </div>
@@ -274,6 +306,7 @@
 </template>
 
 <script lang="ts">
+import { QBtn, QInput } from 'quasar';
 import { defineComponent, ref, onMounted } from 'vue';
 
 export default defineComponent({
@@ -282,71 +315,75 @@ export default defineComponent({
   components: {},
 
   setup() {
-    const mainPosts = [
+    // TODO: Define variables with <>
+    const mainPosts: {
+      postId: number;
+      postTitle: string;
+      postAuthor: string;
+      postAuthorPfp: string;
+      // TODO: change to date
+      postDate: string;
+      postLikeCount: number;
+      postDislikeCount: number;
+      postImage: string;
+      postDescription: string;
+      postContent: string;
+    }[] = [
       {
-        postId: '1',
+        postId: 1,
         postTitle: 'Cómo pasar trigo',
         postAuthor: 'Andres Walteros',
         postAuthorPfp:
           'https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg',
         postDate: '1 month ago',
-        postLikeCount: '23',
-        postDislikeCount: '2',
+        postLikeCount: 23,
+        postDislikeCount: 2,
         postImage:
           'https://i0.wp.com/lasmatesfaciles.com/wp-content/uploads/2019/10/intro-trigonometria.png?fit=840%2C473&ssl=1',
         postDescription:
           'Guía básica para entender los conceptos principales de trigonometría.',
         postContent:
           'Anim mollit proident deserunt est excepteur reprehenderit eu cupidatat id cupidatat. Voluptate dolore tempor laboris nostrud proident quis Lorem eiusmod. Duis veniam proident velit cillum ut irure velit excepteur do ipsum. Sint consectetur tempor eiusmod deserunt laboris. In consectetur Lorem nulla culpa. Est dolore cupidatat aute eiusmod in consectetur incididunt fugiat est nulla ea adipisicing.',
-        postContentFilter: function () {
-          return this.postContent.length > 200
-            ? this.postContent.substring(0, 200) + '...'
-            : this.postContent;
-        },
       },
       {
-        postId: '1',
+        postId: 1,
         postTitle: 'Cómo pasar trigo',
         postAuthor: 'Andres Walteros',
         postAuthorPfp:
           'https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg',
         postDate: '1 month ago',
-        postLikeCount: '23',
-        postDislikeCount: '2',
+        postLikeCount: 23,
+        postDislikeCount: 2,
         postImage:
           'https://i0.wp.com/lasmatesfaciles.com/wp-content/uploads/2019/10/intro-trigonometria.png?fit=840%2C473&ssl=1',
         postDescription:
           'Guía básica para entender los conceptos principales de trigonometría.',
         postContent:
           'Anim mollit proident deserunt est excepteur reprehenderit eu cupidatat id cupidatat. Voluptate dolore tempor laboris nostrud proident quis Lorem eiusmod. Duis veniam proident velit cillum ut irure velit excepteur do ipsum. Sint consectetur tempor eiusmod deserunt laboris. In consectetur Lorem nulla culpa. Est dolore cupidatat aute eiusmod in consectetur incididunt fugiat est nulla ea adipisicing.',
-        postContentFilter: function () {
-          return this.postContent.length > 200
-            ? this.postContent.substring(0, 200) + '...'
-            : this.postContent;
-        },
       },
       {
-        postId: '1',
+        postId: 1,
         postTitle: 'Cómo pasar trigo',
         postAuthor: 'Andres Walteros',
         postAuthorPfp:
           'https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg',
         postDate: '1 month ago',
-        postLikeCount: '23',
-        postDislikeCount: '2',
+        postLikeCount: 23,
+        postDislikeCount: 2,
         postImage:
           'https://i0.wp.com/lasmatesfaciles.com/wp-content/uploads/2019/10/intro-trigonometria.png?fit=840%2C473&ssl=1',
         postDescription:
           'Guía básica para entender los conceptos principales de trigonometría.',
         postContent:
           'Anim mollit proident deserunt est excepteur reprehenderit eu cupidatat id cupidatat. Voluptate dolore tempor laboris nostrud proident quis Lorem eiusmod. Duis veniam proident velit cillum ut irure velit excepteur do ipsum. Sint consectetur tempor eiusmod deserunt laboris. In consectetur Lorem nulla culpa. Est dolore cupidatat aute eiusmod in consectetur incididunt fugiat est nulla ea adipisicing.',
-        postContentFilter: function () {
-          return this.postContent.length > 200
-            ? this.postContent.substring(0, 200) + '...'
-            : this.postContent;
-        },
       },
     ];
+
+    const postContentFilter = function (postContent: string) {
+      return postContent.length > 200
+        ? postContent.substring(0, 200) + '...'
+        : postContent;
+    };
 
     const headerBanner = ref();
 
@@ -354,17 +391,20 @@ export default defineComponent({
 
     const toolbarTitle = ref();
 
-    const toolbarButtonLogin = ref();
-    const toolbarButtonRegister = ref();
+    const toolbarSearchBar = ref<QInput>();
+    const toolbarButtonLogin = ref<QBtn>();
+    const toolbarButtonRegister = ref<QBtn>();
 
-    const headerBannerParallax = (event: any) => {
-      let x = event.clientX / 28;
-      let y = event.clientY / 28;
+    const headerBannerParallax = (event: MouseEvent) => {
+      // TODO: Fix this sht
+      let x = event.clientX / 20;
+      let y = event.clientY / 20;
 
       headerBanner.value.style.animation = 'none';
       headerBanner.value.style.backgroundPosition = `-${x}px -${y}px`;
     };
 
+    // TODO: Make this anim
     const headerBannerLeave = () => {
       setTimeout(() => {
         headerBanner.value.style.animation =
@@ -372,48 +412,49 @@ export default defineComponent({
         // headerBanner.value.style.animation = 'headerBannerMove 2s infinite';
       }, 1000);
     };
-
     onMounted(() => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            toolbarTitle.value.classList.remove('toolbar-title-enter');
-            toolbarButtonLogin.value.classList.remove('toolbar-btn-enter');
-            toolbarButtonRegister.value.classList.remove('toolbar-btn-enter');
-          } else {
-            toolbarTitle.value.classList.add('toolbar-title-enter');
-            toolbarButtonLogin.value.classList.add('toolbar-btn-enter');
-            toolbarButtonRegister.value.classList.add('toolbar-btn-enter');
-          }
-
-          if (!entries[1].isIntersecting) {
-            console.log(entries[1]);
-          }
-        },
-        {
-          rootMargin: '0px 0px 100px 0px',
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          toolbarTitle.value.classList.remove('toolbar-title-enter');
+          toolbarButtonLogin.value?.$el.classList.remove('toolbar-btn-enter');
+          toolbarButtonRegister.value?.$el.classList.remove(
+            'toolbar-btn-enter'
+          );
+          toolbarSearchBar.value?.$el.classList.remove(
+            'toolbar-searchBar-enter'
+          );
+        } else {
+          toolbarTitle.value.classList.add('toolbar-title-enter');
+          toolbarButtonLogin.value?.$el.classList.add('toolbar-btn-enter');
+          toolbarButtonRegister.value?.$el.classList.add('toolbar-btn-enter');
+          toolbarSearchBar.value?.$el.classList.add('toolbar-searchBar-enter');
         }
-      );
+      });
 
       const header = document.querySelector('.header-banner');
       observer.observe(header as Element);
-
-      const headerBanner = document.querySelector('.header-banner-btn');
-      observer.observe(headerBanner as Element);
     });
 
+    const addSearchBarClass = () => {
+      toolbarSearchBar.value?.$el.classList.add('toolbar-searchBar-enter');
+      console.log('d');
+    };
+
     return {
-      headerBannerTitle,
       toolbarTitle,
+      toolbarSearchBar,
       toolbarButtonLogin,
       toolbarButtonRegister,
       headerBanner,
+      headerBannerTitle,
       headerBannerParallax,
       headerBannerLeave,
+      searchBar: ref(),
       mainPosts,
+      postContentFilter,
       group: ref(['op1']),
       userLogged: false,
-
+      addSearchBarClass,
       filterType: [
         {
           label: 'Blog',
@@ -471,87 +512,93 @@ export default defineComponent({
 
   .toolbar-title {
     font-size: 30px;
+    transform: translateX(-120px);
     transition: all 0.2s;
-    margin-left: -10%;
   }
   .toolbar-title-enter {
-    transform: translate(10%, 0);
+    transform: translateX(0);
+  }
+
+  .toolbar-searchBar {
+    transform: translateY(-150px);
+    width: 780px;
+    transition: all 0.2s;
+  }
+
+  .toolbar-searchBar-enter {
+    transform: translateY(0);
   }
 
   .toolbar-btn {
-    margin-top: -130px;
+    margin-top: -150px;
   }
 
   .toolbar-btn-enter {
     margin-top: 0;
   }
 }
+.searchBar {
+  background: #ffffff;
+  border-radius: 50px;
+}
 .header-banner {
-  transition: all 0.1s;
-  background-image: url('../../../assets/red-blue-bg.png');
-  background-size: 105%;
-  height: 70vh;
+  // animation: headerBannerMove 2s infinite;
+  background: url('../../../assets/red-blue-bg.png') no-repeat;
+  background-size: 120%;
+  height: 800px;
   margin-top: -80px;
-  animation: headerBannerMove 2s infinite;
+  transition: all 0.1s;
   .header-text {
     width: 800px;
   }
-  .header-banner-btn {
-    scale: 1.1;
-  }
 
-  @keyframes headerBannerMove {
-    0% {
-      background-position: 0px 0px;
-    }
-    50% {
-      background-position: -20px -20px;
-    }
-    100% {
-      background-position: 0px 0px;
-    }
-  }
-  @keyframes headerBannerInitialPos {
-    0% {
-    }
-    100% {
-      background-position: 0px 0px;
-    }
-  }
+  // @keyframes headerBannerMove {
+  //   0% {
+  //     background-position: 0px 0px;
+  //   }
+  //   50% {
+  //     background-position: -20px -20px;
+  //   }
+  //   100% {
+  //     background-position: 0px 0px;
+  //   }
+  // }
+  // @keyframes headerBannerInitialPos {
+  //   0% {
+  //   }
+  //   100% {
+  //     background-position: 0px 0px;
+  //   }
+  // }
 }
 .enter-account-btn {
-  transition: all 0.1s;
-  scale: 1.1;
+  border-radius: 20px;
   letter-spacing: normal;
+  transition: all 0.1s;
 }
 .enter-account-btn:hover {
   scale: 1.2;
-}
-.toolbar-register {
-  border-radius: 20px;
 }
 
 //----------------Main
 .layout-content {
   .main {
-    // padding: 0 !important;
-    margin: 0 16px;
-
     gap: 20px;
+    margin: 0 16px;
+    position: relative;
 
     .filterContent-container {
       gap: 16px;
       .filterContent-option {
-        width: 200px;
         padding: 10px;
       }
       .filterContent-option span {
+        color: rgba($primary, 0.5);
         font-size: 28px;
         padding: 4px 0 12px 0;
-        color: rgba($primary, 0.5);
       }
       .filterContent-option:hover {
-        background: rgba($info, 0.1);
+        background: rgba($white, 0.1);
       }
     }
     //-----Posts
@@ -561,9 +608,9 @@ export default defineComponent({
     }
     .post-like-count,
     .post-dislike-count {
-      font-size: 18px;
       background: $white;
       border-radius: 6px;
+      font-size: 18px;
     }
     .blog-header-separator {
       background: $white;
@@ -578,11 +625,11 @@ export default defineComponent({
     rgba(121, 135, 203, 0.7) 0%,
     rgba(88, 119, 255, 0.7) 100%
   );
-  width: 100%;
   position: sticky;
+  width: 100%;
   .apply-btn {
-    width: 200px;
     border-radius: 8px;
+    width: 200px;
   }
 }
 //subjects-lateral
@@ -600,12 +647,12 @@ export default defineComponent({
 }
 //friend-lateral
 .friend-lateral {
-  border-radius: 0 8px 8px 0;
   background: linear-gradient(
     133deg,
     rgba(121, 135, 203, 0.7) 0%,
     rgba(108, 135, 255, 0.7) 100%
   );
+  border-radius: 0 8px 8px 0;
 
   .no-friend-img {
     opacity: 0.6;
@@ -620,8 +667,8 @@ export default defineComponent({
     }
     .friend-info {
       border-top: 1px solid rgba($white-blue, 0.719);
-      line-height: 20px;
       font-size: 18px;
+      line-height: 20px;
     }
     .first-friend {
       border-top: none;
@@ -629,14 +676,14 @@ export default defineComponent({
     }
 
     .online-dot {
-      width: 12px;
-      height: 12px;
       background: #99cc00;
+      border-radius: 100%;
+      bottom: 2%;
+      height: 12px;
       outline: 3px solid rgb(210, 225, 255);
       position: absolute;
-      bottom: 2%;
       right: 2%;
-      border-radius: 100%;
+      width: 12px;
     }
     .last-friend {
       border-bottom: 1px solid rgba($white-blue, 0.719);
