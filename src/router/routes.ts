@@ -1,4 +1,5 @@
 // import { RouteRecordRaw } from 'vue-router';
+import authRouter from 'src/modules/auth/router';
 
 const routes = [
   {
@@ -9,7 +10,11 @@ const routes = [
       {
         path: '',
         name: 'home',
-        component: () => import('../modules/home/pages/HomePage.vue'),
+        component: () => import('src/modules/home/pages/HomePage/HomePage.vue'),
+      },
+      {
+        path: '/auth',
+        ...authRouter,
       },
     ],
   },

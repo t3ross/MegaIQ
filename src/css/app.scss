@@ -13,42 +13,57 @@ html {
 body {
   overflow-x: hidden;
 }
-@font-face {
-  font-family: headerFont;
-  src: url(./fonts/FredokaOne/FredokaOne-Regular.ttf);
-}
-@font-face {
-  font-family: textFontMedium;
-  src: url(./fonts/Poppins/Poppins-Medium.ttf);
-}
-@font-face {
-  font-family: textFontLight;
-  src: url(./fonts/Poppins/Poppins-Light.ttf);
-}
-@font-face {
-  font-family: textFontBold;
-  src: url(./fonts/Poppins/Poppins-Bold.ttf);
-}
 
 .header-font {
-  font-family: 'headerFont';
-  font-size: 9rem;
+  font-family: $font-family-fredoka;
+  user-select: none !important;
+  color: #fff;
+  // TODO: Make anim when click
+  cursor: pointer;
+  font-size: 3rem;
 }
-
+.iq {
+  background: linear-gradient(133deg, $primary 0%, $secondary 100%);
+  background-clip: text;
+  color: transparent;
+}
+.iq-background {
+  margin-left: 4px;
+  border-radius: 8px;
+  padding: 4px 8px;
+  background: $white;
+}
+.text-font-light {
+  font-family: $font-family-poppins;
+  font-weight: 300;
+  line-height: 1.7rem;
+}
 .text-font-medium {
-  font-family: 'textFontMedium';
+  font-family: $font-family-poppins;
   font-size: 1.6rem;
   line-height: 1.7rem;
 }
-.text-font-light {
-  font-family: 'textFontLight';
-}
 
 .text-font-bold {
-  font-family: 'textFontBold';
+  font-family: $font-family-poppins;
+  font-weight: 700;
+  line-height: 1.7rem;
 }
 
 .white-border {
   border: 1px solid $white;
   border-radius: 8px;
+}
+
+.auth {
+  background-color: $white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 500px;
+}
+.auth-title {
+  padding-bottom: 20px;
+}
+.auth-input {
+  border-radius: 12px !important;
 }
