@@ -1,21 +1,8 @@
 <template>
-  <div ref="toolbarTitle" class="auth-title header-font">
+  <div class="auth-title header-font flex flex-center">
     Mega<span class="iq-background"><span class="iq">IQ</span></span>
   </div>
-  <q-form
-    @submit="onSubmit"
-    @reset="onReset"
-    class="auth auth-login q-gutter-y-md">
-    <q-input
-      class="auth-input"
-      filled
-      v-model="name"
-      label="Tu nombre"
-      lazy-rules
-      :rules="[
-        (val) => (val && val.length > 0) || 'Por favor escribe algún nombre',
-      ]" />
-
+  <q-form @submit="onSubmit" @reset="onReset" class="auth auth-login">
     <q-input
       class="auth-input"
       filled
@@ -32,7 +19,35 @@
           'Por favor escribe un correo electrónico válido',
       ]" />
 
-    <q-toggle v-model="accept" label="Acepto los términos y condiciones" />
+    <q-input
+      class="auth-input"
+      filled
+      :type="isPwd ? 'password' : 'text'"
+      v-model="password"
+      label="Tu contraseña"
+      lazy-rules
+      :rules="[
+        (val) =>
+          (val && val.length !== 0) || 'Por favor escribe una contraseña',
+        (val) =>
+          val.length >= 8 ||
+          'Por favor escribe una contraseña con mínimo 8 carácteres.',
+        (val) =>
+          val.includes('') ||
+          'Por favor escribe una contraseña con mínimo 8 carácteres.',
+      ]">
+      <template v-slot:append v-if="password">
+        <q-icon
+          :name="isPwd ? 'visibility_off' : 'visibility'"
+          class="cursor-pointer"
+          @click="isPwd = !isPwd" />
+      </template>
+    </q-input>
+
+    <router-link :to="{ name: 'register' }"
+      >¿No tienes cuenta?
+      <span class="text-primary">Regístrate</span></router-link
+    >
 
     <div>
       <q-btn label="Acceder" type="submit" color="primary" />
@@ -60,9 +75,11 @@ export default {
     const accept = ref(false);
 
     return {
+      isPwd: ref(true),
       name,
       email,
       accept,
+      password: ref(),
 
       onSubmit() {
         if (accept.value !== true) {
