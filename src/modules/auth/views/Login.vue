@@ -7,40 +7,36 @@
       class="auth-input"
       filled
       type="email"
-      v-model="email"
-      label="Tu correo electrónico"
-      lazy-rules
+      v-model="state.email"
+      label="Tu correo electrónico o nombre de usuario"
       :rules="[
         (val) =>
           (val !== null && val !== '') ||
           'Por favor escribe tu correo electrónico',
-        (val) =>
-          (val > 0 && val < 1) ||
-          'Por favor escribe un correo electrónico válido',
+        (val, rules) =>
+          rules.email(val) || 'Por favor escribe un correo electrónico válido',
       ]" />
 
     <q-input
       class="auth-input"
       filled
       :type="isPwd ? 'password' : 'text'"
-      v-model="password"
-      label="Tu contraseña"
-      lazy-rules
+      v-model="state.password.password"
+      label="Escribe tu contraseña"
       :rules="[
         (val) =>
           (val && val.length !== 0) || 'Por favor escribe una contraseña',
-        (val) =>
-          val.length >= 8 ||
-          'Por favor escribe una contraseña con mínimo 8 carácteres.',
-        (val) =>
-          val.includes('') ||
-          'Por favor escribe una contraseña con mínimo 8 carácteres.',
+        // TODO: Match the passwords
+        // (val) =>
+        //   val.match(letterNumber) ||
+        //   'Por favor escribe por lo menos un número y una letra',
       ]">
-      <template v-slot:append v-if="password">
+      <template v-slot:append v-if="state.password.password">
         <q-icon
           :name="isPwd ? 'visibility_off' : 'visibility'"
           class="cursor-pointer"
-          @click="isPwd = !isPwd" />
+          @mousedown="isPwd = !isPwd"
+          @mouseup="isPwd = !isPwd" />
       </template>
     </q-input>
 
@@ -68,6 +64,15 @@ import { ref } from 'vue';
 export default {
   name: 'auth-login',
   setup() {
+    const state = ref({
+      username: '',
+      email: '',
+      password: {
+        password: '',
+        confirm: '',
+      },
+    });
+
     const $q = useQuasar();
 
     const name = ref(null);
@@ -75,11 +80,11 @@ export default {
     const accept = ref(false);
 
     return {
+      state,
       isPwd: ref(true),
       name,
       email,
       accept,
-      password: ref(),
 
       onSubmit() {
         if (accept.value !== true) {

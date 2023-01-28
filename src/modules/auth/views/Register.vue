@@ -8,9 +8,11 @@
       filled
       v-model="state.name"
       label="Tu nombre de usuario"
-      lazy-rules
       :rules="[
         (val) => (val && val.length > 0) || 'Por favor escribe algún nombre',
+        (val) =>
+          val.length >= 3 ||
+          'Por favor escribe un nombre con mínimo 3 carácteres.',
       ]" />
     <q-input
       class="auth-input"
@@ -18,39 +20,27 @@
       type="email"
       v-model="state.email"
       label="Tu correo electrónico"
-      :error-message="validations('email')"
-      :error="v$.email.$invalid" />
-    <!-- <q-input
-      class="auth-input"
-      filled
-      type="email"
-      v-model="state.email"
-      label="Tu correo electrónico"
-      lazy-rules
       :rules="[
         (val) =>
           (val !== null && val !== '') ||
           'Por favor escribe tu correo electrónico',
-        (val) => val > 0 || 'Por favor escribe un correo electrónico válido',
-      ]" /> -->
-
+        (val, rules) =>
+          rules.email(val) || 'Por favor escribe un correo electrónico válido',
+      ]" />
     <q-input
       class="auth-input"
       filled
       :type="isPwd1 ? 'password' : 'text'"
       v-model="state.password.password"
       label="Escribe una  contraseña"
-      lazy-rules
       :rules="[
         (val) =>
           (val && val.length !== 0) || 'Por favor escribe una contraseña',
         (val) =>
           val.length >= 8 ||
           'Por favor escribe una contraseña con mínimo 8 carácteres.',
-        //   val.value.match(letterNumber) ||
-        //   'Por favor escribe por lo menos un número y una letra',
         (val) =>
-          v$.password.minLength ||
+          val.match(letterNumber) ||
           'Por favor escribe por lo menos un número y una letra',
       ]">
       <template v-slot:append v-if="state.password.password">
@@ -68,9 +58,13 @@
       :type="isPwd2 ? 'password' : 'text'"
       v-model="state.password.confirm"
       label="Repite la contraseña"
-      lazy-rules
       :rules="[
-        (val) => (val && val.length > 0) || 'Por favor escribe algún nombre',
+        (val) =>
+          (val && val.length !== 0) ||
+          'Por favor escribe la contraseña nuevamente',
+        (val) =>
+          val.match(state.password.password) ||
+          'Las contraseñas no coinciden. Por favor escribe la contraseña nuevamente',
       ]"
       ><template v-slot:append v-if="state.password.confirm">
         <q-icon
@@ -103,14 +97,6 @@
 
 <script>
 import { useQuasar } from 'quasar';
-import { useVuelidate } from '@vuelidate/core';
-import {
-  alphaNum,
-  email,
-  minLength,
-  required,
-  sameAs,
-} from '@vuelidate/validators';
 import { ref } from 'vue';
 
 export default {
@@ -128,40 +114,12 @@ export default {
       accept: false,
     });
 
-    const rules = {
-      username: { required, minLength: minLength(3) },
-      email: { required, email },
-      password: {
-        password: { required, minLength: minLength(8), alphaNum },
-        confirm: { required, sameAs: sameAs(state.value.password.password) },
-      },
-    };
-
-    const v$ = useVuelidate(rules, state);
-
-    console.log(v$.value.email.$invalid);
-
-    const validations = (field) => {
-      if (field === 'username') {
-        if (v$.value.email.required) return 'Por favor escribe un nombre';
-        if (v$.value.email.minLength)
-          return 'Por favor escribe un nombre con mínimo 3 carácteres.';
-      }
-      if (field === 'email') {
-        if (v$.value.email.required)
-          return 'Por favor escribe un correo electrónico';
-        if (v$.value.email.email)
-          return 'Por favor escribe un correo electrónico válido';
-      }
-    };
-
     return {
-      validations,
       isPwd1: ref(true),
       isPwd2: ref(true),
       state,
-      v$,
-      letterNumber: ref(/^[0-9a-zA-Z]+$/),
+      letterNumber: ref('(?=[A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]'),
+      // letterNumber: ref('/^[0-9a-zA-Z]+$/'),
 
       onSubmit() {
         if (accept.value !== true) {
