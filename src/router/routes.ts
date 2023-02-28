@@ -1,5 +1,6 @@
 // import { RouteRecordRaw } from 'vue-router';
 import authRouter from 'src/modules/auth/router';
+import accountRouter from 'src/modules/account/router';
 
 const routes = [
   {
@@ -15,6 +16,10 @@ const routes = [
       {
         path: '/auth',
         ...authRouter,
+      },
+      {
+        path: '/account',
+        ...accountRouter,
       },
     ],
   },

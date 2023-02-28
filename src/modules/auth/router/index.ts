@@ -10,7 +10,7 @@ export default {
       name: 'login',
       component: () =>
         import(
-          /* webpackChunkName: "Login" */ 'src/modules/auth/views/Login.vue'
+          /* webpackChunkName: "Login" */ 'src/modules/auth/views/login/AuthLogin.vue'
         ),
     },
     {
@@ -18,7 +18,7 @@ export default {
       name: 'register',
       component: () =>
         import(
-          /* webpackChunkName: "register" */ 'src/modules/auth/views/Register.vue'
+          /* webpackChunkName: "register" */ 'src/modules/auth/views/register/AuthRegister.vue'
         ),
     },
   ],

@@ -24,3 +24,11 @@
   background: $secondary;
   width: 152px;
 }
+.auth-input {
+  margin-bottom: 12px;
+  display: block;
+}
+.auth-link:active {
+  color: $primary;
+  text-decoration: underline;
+}

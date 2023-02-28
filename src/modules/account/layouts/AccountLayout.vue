@@ -10,6 +10,16 @@
   </q-layout>
 </template>
 
-<style lang="scss">
-@import '../css/auth.scss';
-</style>
+<script>
+export default {
+  name: 'accountLayout',
+  components: {
+    // Entry: defineAsyncComponent(() => import('./Entry.vue')),
+  },
+  setup() {
+    return {};
+  },
+};
+</script>
+
+<style scoped></style>
