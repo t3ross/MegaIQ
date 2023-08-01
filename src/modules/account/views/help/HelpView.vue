@@ -1,4 +1,4 @@
-<script lang="ts" src="./AccountView.ts" />
+<script src="./HelpView.ts"></script>
 
 <template>
   <div>Hi!</div>

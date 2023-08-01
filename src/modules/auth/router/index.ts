@@ -2,7 +2,7 @@ export default {
   name: 'auth',
   component: () =>
     import(
-      /* webpackChunkName: "Auth layout" */ 'src/modules/auth/layouts/AuthLayout.vue'
+      /* webpackChunkName: "authlayout" */ 'src/modules/auth/layouts/AuthLayout.vue'
     ),
   children: [
     {
@@ -10,7 +10,7 @@ export default {
       name: 'login',
       component: () =>
         import(
-          /* webpackChunkName: "Login" */ 'src/modules/auth/views/login/AuthLogin.vue'
+          /* webpackChunkName: "login" */ 'src/modules/auth/views/login/AuthLogin.vue'
         ),
     },
     {

@@ -94,11 +94,12 @@ export default defineComponent({
 
     const headerBannerParallax = (event: MouseEvent) => {
       // TODO: Fix this sht
-      const x = event.clientX / 20;
-      const y = event.clientY / 20;
+      const x = event.clientX / 20 + 100;
+      const y = event.clientY / 20 + 100;
 
       headerBanner.value.style.animation = 'none';
       headerBanner.value.style.backgroundPosition = `-${x}px -${y}px`;
+      console.log(event.screenX);
     };
     const postContentFilter = function (postContent: string) {
       return postContent.length > 300

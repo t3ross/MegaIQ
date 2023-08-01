@@ -51,6 +51,7 @@
   // animation: headerBannerMove 2s infinite;
   background: url('assets/red-blue-bg.png') no-repeat;
   background-size: 120%;
+  // background-position: 100px;
   height: 90vh;
   margin-top: -80px;
   transition: all 0.1s;
@@ -130,8 +131,8 @@
       }
     }
     //-----Posts
-    .post-like-count .post-dislike-count {
-      background: $primary;
+    .post-vote-count {
+      background: rgba($primary, 0.2);
       border-radius: 6px;
       font-size: 18px;
     }

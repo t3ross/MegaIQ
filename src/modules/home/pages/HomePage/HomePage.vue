@@ -5,11 +5,13 @@
 
   <q-header class="header-container">
     <q-toolbar class="header row justify-between">
+      <!-- MegaIQ logo -->
       <q-toolbar-title shrink class="col-1-md-1">
         <div ref="toolbarTitle" class="toolbar-title header-font">
           Mega<span class="iq-background"><span class="iq">IQ</span></span>
         </div>
       </q-toolbar-title>
+      <!-- Search bar -->
       <div class="searchBar toolbar-searchBar col-6" ref="toolbarSearchBar">
         <q-input
           class="q-px-lg prevent prueba"
@@ -50,16 +52,26 @@
     </q-toolbar>
   </q-header>
 
+  <!-- Banner -->
+
   <div
     class="header-banner text-h1 column flex-center q-gutter-y-xl text-white"
     ref="headerBanner"
     @mousemove="headerBannerParallax">
     <div class="flex items-end q-pt-xl col" ref="headerBannerTitle">
-      <div class="header-banner-title header-font">
+      <!-- <div class="header-banner-title header-font">
         Mega<span class="iq-background iq-banner"
           ><span class="iq non-selectable">IQ</span></span
         >
-      </div>
+      </div> -->
+      <q-img
+        src="~assets/MegaIQ.svg"
+        width="500px"
+        :ratio="3"
+        class="q-mt-md no-friend-img"
+        spinner-color="primary"
+        spinner-size="82px"
+        alt="MegaIQ logo" />
     </div>
     <p class="header-text text-body1 text-font-medium">
       Repasa conceptos, aprende cosas nuevas y comparte con demás estudiantes e
@@ -216,13 +228,16 @@
       <!-- ----Main content---- -->
 
       <q-page-container class="main full-height flex flex-center">
+        <!-- No results -->
         <div class="column flex-center" v-if="!mainPosts">
           <img
             src="https://distok.top/stickers/749043879713701898/749053210760577245.png"
             alt="No posts results Image" />
           <p>No hay nada para mostrar aquí... busca en otro sitio ^^</p>
         </div>
+        <!-- Results -->
         <div class="q-gutter-y-md" v-else>
+          <!-- Top filters  -->
           <div
             class="filterContent-container full-width row flex-center q-pa-md white-border col-1">
             <q-btn
@@ -258,7 +273,7 @@
               Descubrir
             </q-btn>
           </div>
-
+          <!-- Posts -->
           <div
             class="main-posts q-pa-md white-border"
             v-for="post in mainPosts"
@@ -281,7 +296,8 @@
                 </div>
               </q-toolbar-title>
               <div class="flex q-gutter-md q-pr-sm">
-                <div class="post-like-count column flex-center non-selectable">
+                <div
+                  class="post-vote-count post-like-count column flex-center non-selectable">
                   <q-btn
                     class="text-indigo-2"
                     dense
@@ -292,7 +308,7 @@
                   {{ post.postLikeCount }}
                 </div>
                 <div
-                  class="post-dislike-count column flex-center non-selectable">
+                  class="post-vote-count post-dislike-count column flex-center non-selectable">
                   <q-btn
                     class="text-indigo-2"
                     dense
