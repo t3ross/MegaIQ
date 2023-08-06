@@ -66,8 +66,9 @@
       </div> -->
       <q-img
         src="~assets/MegaIQ.svg"
-        width="500px"
-        :ratio="3"
+        width="380px"
+        height="132px"
+        :ratio="2"
         class="q-mt-md no-friend-img"
         spinner-color="primary"
         spinner-size="82px"
@@ -130,7 +131,9 @@
         <div class="friend-lateral laterals q-pa-md">
           <p class="text-h4 text-white text-weight-regular">Amigos</p>
 
-          <div v-if="!friendsList" class="no-friends column flex-center">
+          <div
+            v-if="friendsList.length === 0"
+            class="no-friends column flex-center">
             No tienes ningún amigo aún... <br />
             <a href="#">Busca gente aquí</a>
             <q-img
@@ -148,32 +151,33 @@
               clickable
               v-ripple:white
               class="no-padding friend-item"
-              :class="{ 'last-friend': friend.id === '3' }"
               v-for="friend in friendsList"
-              :key="friend.id">
+              :key="friend.friendId">
               <q-item-section avatar>
                 <q-avatar size="56px">
-                  <img :src="friend.pfp" :alt="friend.name + 'Photo'" />
+                  <img
+                    :src="friend.friendPFP"
+                    :alt="friend.friendName + 'Photo'" />
                   <div
                     class="online-dot"
-                    v-if="friend.status === 'active'"></div>
+                    v-if="friend.friendStatus === 'online'"></div>
                 </q-avatar>
               </q-item-section>
 
               <q-item-section
                 class="friend-info text-white"
-                :class="{ 'first-friend': friend.id === '1' }">
-                {{ friend.name }}
+                :class="{ 'first-friend': friend.friendId === 1 }">
+                {{ friend.friendName }}
                 <br />
 
                 <span class="friend-last-msg text-weight-light text-subtitle1">
                   <i
                     :class="
-                      friend.msgSeen
+                      friend.friendMsgSeen
                         ? 'fa-solid fa-circle-check'
                         : 'fa-regular fa-circle-check'
                     "></i>
-                  {{ friend.lastMsg }}</span
+                  {{ friend.friendLastMsg }}</span
                 >
               </q-item-section>
             </q-item>

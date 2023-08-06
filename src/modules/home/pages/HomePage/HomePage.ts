@@ -13,11 +13,11 @@ export default defineComponent({
     //   required: false,
     //   default: null,
     // },
-    friendsList: {
-      type: Array,
-      required: false,
-      default: null,
-    },
+    // friendsList: {
+    //   type: Array,
+    //   required: false,
+    //   default: null,
+    // },
   },
 
   setup() {
@@ -91,6 +91,32 @@ export default defineComponent({
           'Anim mollit proident deserunt est excepteur reprehenderit eu cupidatat id cupidatat. Voluptate dolore tempor laboris nostrud proident quis Lorem eiusmod. Duis veniam proident velit cillum ut irure velit excepteur do ipsum. Sint consectetur tempor eiusmod deserunt laboris. In consectetur Lorem nulla culpa. Est dolore cupidatat aute eiusmod in consectetur incididunt fugiat est nulla ea adipisicing.',
       },
     ];
+    const friendsList: {
+      friendId: number;
+      friendName: string;
+      friendStatus: string;
+      friendPFP: string;
+      // TODO: change to date
+      friendLastMsg: string;
+      friendMsgSeen: boolean;
+    }[] = [
+      // {
+      //   friendId: 0,
+      //   friendName: 'string',
+      //   friendStatus: 'online',
+      //   friendPFP: '',
+      //   friendLastMsg: 'string',
+      //   friendMsgSeen: true,
+      // },
+      // {
+      //   friendId: 1,
+      //   friendName: 'btic',
+      //   friendStatus: 'online',
+      //   friendPFP: '',
+      //   friendLastMsg: 'string',
+      //   friendMsgSeen: false,
+      // },
+    ];
 
     const headerBannerParallax = (event: MouseEvent) => {
       // TODO: Fix this sht
@@ -143,6 +169,7 @@ export default defineComponent({
 
     return {
       mainPosts,
+      friendsList,
       toolbarTitle,
       toolbarSearchBar,
       toolbarButtonLogin,
