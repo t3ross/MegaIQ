@@ -7,20 +7,22 @@
     <q-toolbar class="header row justify-between">
       <!-- MegaIQ logo -->
       <q-toolbar-title shrink class="col-1-md-1">
-        <div ref="toolbarTitle" class="toolbar-title header-font">
+        <div ref="toolbarTitle" class="toolbar-title-home header-font">
           <q-img
+            @click="goToHome"
             src="~assets/MegaIQ.svg"
             width="150px"
             height="50px"
             :ratio="1"
-            class="no-friend-img"
             spinner-color="primary"
             spinner-size="82px"
             alt="MegaIQ logo" />
         </div>
       </q-toolbar-title>
       <!-- Search bar -->
-      <div class="searchBar toolbar-searchBar col-6" ref="toolbarSearchBar">
+      <div
+        class="searchBar toolbar-searchBar toolbar-searchBar-home col-6"
+        ref="toolbarSearchBar">
         <q-input
           class="q-px-lg prevent prueba"
           borderless
@@ -34,25 +36,26 @@
               color="primary" /> </template
         ></q-input>
       </div>
-
+      <!-- Account -->
       <div class="column justify-end col-1-md-1">
         <div v-if="userLogged">
           <q-btn dense flat round icon="las la-cog" />
           <q-btn dense flat round icon="las la-user-circle" />
         </div>
+        <!-- Buttons -->
         <div
           v-else
           class="row q-gutter-x-sm text-font-medium row flex-center no-wrap q-pr-md">
           <q-btn
-            class="enter-account-btn toolbar-btn toolbar-login text-uppercase"
+            class="header-btn account-btn toolbar-btn toolbar-login text-uppercase"
             ref="toolbarButtonLogin"
-            @click="goToLogin"
+            to="/auth/login"
             label="Inicia sesión!"
             unelevated />
           <q-btn
-            class="enter-account-btn toolbar-btn toolbar-register justify-center"
+            class="header-btn account-btn toolbar-btn toolbar-register justify-center"
             ref="toolbarButtonRegister"
-            @click="goToRegister"
+            to="/auth/register"
             color="primary"
             label="Registrate!" />
         </div>
@@ -66,14 +69,13 @@
     class="header-banner text-h1 column flex-center q-gutter-y-xl text-white"
     ref="headerBanner"
     @mousemove="headerBannerParallax">
+    <!-- Logo -->
     <div class="flex items-end col" ref="headerBannerTitle">
-      <!-- Logo -->
       <q-img
         src="~assets/MegaIQ.svg"
         width="380px"
         height="132px"
         :ratio="2"
-        class="no-friend-img"
         spinner-color="primary"
         spinner-size="82px"
         alt="MegaIQ logo" />
@@ -90,7 +92,7 @@
           <!-- Search Bar -->
           <q-input
             standout
-            class="searchBar header-banner-searchBar white-border q-pl-lg q-pr-sm q-py-sm"
+            class="searchBar header-banner-searchBar q-pl-lg q-pr-sm q-py-sm"
             borderless
             color="primary"
             type="text"
@@ -102,7 +104,7 @@
             </template>
             <q-btn
               class="header-btn"
-              @click="goToServices"
+              to="/results/services"
               label="Servicios de pago"
               color="primary" />
           </q-input>
@@ -112,12 +114,12 @@
           class="header-banner-btns text-font-medium flex flex-center q-gutter-x-md">
           <q-btn
             class="header-btn account-btn"
-            @click="goToLogin"
+            to="/auth/login"
             label="Inicia sesión!"
             unelevated />
           <q-btn
             class="header-btn account-btn"
-            @click="goToRegister"
+            to="/auth/login"
             label="Registrate!"
             color="primary" />
         </div>

@@ -125,7 +125,6 @@ export default defineComponent({
 
       headerBanner.value.style.animation = 'none';
       headerBanner.value.style.backgroundPosition = `-${x}px -${y}px`;
-      console.log(event.screenX);
     };
     const postContentFilter = function (postContent: string) {
       return postContent.length > 300
@@ -223,15 +222,18 @@ export default defineComponent({
           value: 'economy',
         },
       ],
-      goToLogin: () => {
-        router.push({ name: 'login' });
+      goToHome: () => {
+        router.push({ name: 'home' });
       },
-      goToRegister: () => {
-        router.push({ name: 'register' });
-      },
-      goToServices: () => {
-        router.push({ name: 'services' });
-      },
+      // goToLogin: () => {
+      //   router.push({ name: 'login' });
+      // },
+      // goToRegister: () => {
+      //   router.push({ name: 'register' });
+      // },
+      // goToServices: () => {
+      //   router.push({ name: 'services' });
+      // },
     };
   },
 });

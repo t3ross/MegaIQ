@@ -23,17 +23,58 @@ body {
   cursor: pointer;
   font-size: 3rem;
 }
-.iq {
-  background: linear-gradient(133deg, $primary 0%, $secondary 100%);
-  background-clip: text;
-  color: transparent;
+.header-container {
+  backdrop-filter: blur(10px);
+  background-color: rgba($primary, 0.5);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  .header {
+    height: 80px;
+
+    .toolbar-title-home {
+      transition: all 0.2s;
+      transform: translateX(-150px);
+    }
+    .toolbar-title-enter {
+      transform: translateX(0);
+    }
+
+    .toolbar-searchBar {
+      max-width: 1100px;
+      transition: all 0.2s;
+    }
+
+    .toolbar-searchBar-home {
+      transform: translateY(-150px);
+    }
+
+    .toolbar-searchBar-enter {
+      transform: translateY(0);
+    }
+
+    .toolbar-btn {
+      margin-top: -150px;
+    }
+
+    .toolbar-btn-enter {
+      margin-top: 0;
+    }
+  }
 }
-.iq-background {
-  margin-left: 4px;
-  border-radius: 8px;
-  padding: 4px 8px;
-  background: $white;
+
+.searchBar {
+  background: #ffffff;
+  border-radius: 50px;
 }
+.header-btn {
+  border-radius: 100px;
+  letter-spacing: normal;
+  transition: all 0.1s;
+  font-size: 1.7rem !important;
+}
+.account-btn:hover {
+  scale: 1.1;
+}
+
 .text-font-light {
   font-family: $font-family-poppins;
   font-weight: 300;

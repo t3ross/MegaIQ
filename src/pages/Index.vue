@@ -1,15 +1,11 @@
 <template>
-  <q-page>
-    <p>Index</p>
-  </q-page>
+  <q-page class="flex flex-center"> </q-page>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue';
-
 export default defineComponent({
-  name: 'IndexPage',
-  components: {},
+  name: 'PageIndex',
   setup() {
     return {};
   },
