@@ -8,7 +8,15 @@
       <!-- MegaIQ logo -->
       <q-toolbar-title shrink class="col-1-md-1">
         <div ref="toolbarTitle" class="toolbar-title header-font">
-          Mega<span class="iq-background"><span class="iq">IQ</span></span>
+          <q-img
+            src="~assets/MegaIQ.svg"
+            width="150px"
+            height="50px"
+            :ratio="1"
+            class="no-friend-img"
+            spinner-color="primary"
+            spinner-size="82px"
+            alt="MegaIQ logo" />
         </div>
       </q-toolbar-title>
       <!-- Search bar -->
@@ -58,18 +66,14 @@
     class="header-banner text-h1 column flex-center q-gutter-y-xl text-white"
     ref="headerBanner"
     @mousemove="headerBannerParallax">
-    <div class="flex items-end q-pt-xl col" ref="headerBannerTitle">
-      <!-- <div class="header-banner-title header-font">
-        Mega<span class="iq-background iq-banner"
-          ><span class="iq non-selectable">IQ</span></span
-        >
-      </div> -->
+    <div class="flex items-end col" ref="headerBannerTitle">
+      <!-- Logo -->
       <q-img
         src="~assets/MegaIQ.svg"
         width="380px"
         height="132px"
         :ratio="2"
-        class="q-mt-md no-friend-img"
+        class="no-friend-img"
         spinner-color="primary"
         spinner-size="82px"
         alt="MegaIQ logo" />
@@ -79,32 +83,40 @@
       instructores sobre temas académicos. MegaIQ está diseñado para
       complementar y mejorar tu aprendizaje escolar!
     </p>
+    <!-- Toolbar -->
     <div class="flex justify-center items-end col full-width non-selectable">
       <q-toolbar class="header-banner-toolbar q-gutter-x-md q-pb-lg">
         <q-toolbar-title>
+          <!-- Search Bar -->
           <q-input
             standout
-            class="searchBar header-banner-searchBar white-border q-px-lg q-py-sm"
+            class="searchBar header-banner-searchBar white-border q-pl-lg q-pr-sm q-py-sm"
             borderless
             color="primary"
             type="text"
             v-model="searchBar"
             placeholder="Busca algún tema del que quieras investigar...">
+            <!-- Inside -->
             <template v-slot:prepend>
-              <q-icon
-                name="fa-solid fa-magnifying-glass"
-                color="primary" /> </template
-          ></q-input>
+              <q-icon name="fa-solid fa-magnifying-glass" color="primary" />
+            </template>
+            <q-btn
+              class="header-btn"
+              @click="goToServices"
+              label="Servicios de pago"
+              color="primary" />
+          </q-input>
         </q-toolbar-title>
+        <!-- Buttons -->
         <div
           class="header-banner-btns text-font-medium flex flex-center q-gutter-x-md">
           <q-btn
-            class="enter-account-btn"
+            class="header-btn account-btn"
             @click="goToLogin"
             label="Inicia sesión!"
             unelevated />
           <q-btn
-            class="enter-account-btn"
+            class="header-btn account-btn"
             @click="goToRegister"
             label="Registrate!"
             color="primary" />
@@ -233,7 +245,7 @@
 
       <q-page-container class="main full-height flex flex-center">
         <!-- No results -->
-        <div class="column flex-center" v-if="!mainPosts">
+        <div class="column flex-center" v-if="mainPosts.length === 0">
           <img
             src="https://distok.top/stickers/749043879713701898/749053210760577245.png"
             alt="No posts results Image" />
@@ -262,19 +274,19 @@
             </q-btn>
             <q-btn
               :ripple="{ early: false, color: 'indigo-3', keyCodes: [] }"
-              class="filterContent-option col column flex-center filterContent-voted white-border"
-              stack
-              unelevated>
-              <span class="fa-solid fa-heart"></span>
-              Más votos
-            </q-btn>
-            <q-btn
-              :ripple="{ early: false, color: 'indigo-3', keyCodes: [] }"
               class="filterContent-option col column flex-center filterContent-more white-border"
               stack
               unelevated>
               <span class="fa-solid fa-compass"></span>
               Descubrir
+            </q-btn>
+            <q-btn
+              :ripple="{ early: false, color: 'indigo-3', keyCodes: [] }"
+              class="filterContent-option col column flex-center filterContent-voted white-border"
+              stack
+              unelevated>
+              <span class="fa-solid fa-users"></span>
+              Siguiendo
             </q-btn>
           </div>
           <!-- Posts -->
@@ -282,6 +294,7 @@
             class="main-posts q-pa-md white-border"
             v-for="post in mainPosts"
             :key="post.postId">
+            <!-- Post Header -->
             <q-toolbar class="post-title text-h5 q-px-none">
               <q-toolbar-title class="column justify-between">
                 <div class="q-pt-sm">
@@ -296,10 +309,12 @@
                   >
                 </div>
                 <div class="post-description text-grey-8 q-pt-sm">
-                  {{ post.postDescription }} <a href="#"></a>
+                  {{ post.postDescription }}
                 </div>
               </q-toolbar-title>
-              <div class="flex q-gutter-md q-pr-sm">
+              <!-- Votation -->
+              <div class="flex q-gutter-md">
+                <!-- Like -->
                 <div
                   class="post-vote-count post-like-count column flex-center non-selectable">
                   <q-btn
@@ -309,8 +324,11 @@
                     round
                     icon="fa-solid fa-heart fa-lg"
                     size="16px" />
-                  {{ post.postLikeCount }}
+                  <div class="text-grey-7 text-weight-light q-pb-xs">
+                    {{ post.postLikeCount }}
+                  </div>
                 </div>
+                <!-- Dislike -->
                 <div
                   class="post-vote-count post-dislike-count column flex-center non-selectable">
                   <q-btn
@@ -320,11 +338,14 @@
                     round
                     icon="fa-solid fa-heart-crack fa-lg"
                     size="16px" />
-                  {{ post.postDislikeCount }}
+                  <div class="text-grey-7 text-weight-light q-pb-xs">
+                    {{ post.postDislikeCount }}
+                  </div>
                 </div>
               </div>
             </q-toolbar>
             <q-separator class="blog-header-separator q-mt-md" dark />
+            <!-- Post body -->
             <div class="row flex-center">
               <img
                 :src="post.postImage"

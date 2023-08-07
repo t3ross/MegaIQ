@@ -49,7 +49,7 @@ export default defineComponent({
         postAuthorPfp:
           'https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg',
         postDate: '1 month ago',
-        postLikeCount: 23,
+        postLikeCount: 22,
         postDislikeCount: 2,
         postImage:
           'https://i0.wp.com/lasmatesfaciles.com/wp-content/uploads/2019/10/intro-trigonometria.png?fit=840%2C473&ssl=1',
@@ -228,6 +228,9 @@ export default defineComponent({
       },
       goToRegister: () => {
         router.push({ name: 'register' });
+      },
+      goToServices: () => {
+        router.push({ name: 'services' });
       },
     };
   },

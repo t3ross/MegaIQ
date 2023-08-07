@@ -9,12 +9,8 @@
     height: 80px;
 
     .toolbar-title {
-      font-size: 30px;
       transform: translateX(-150px);
       transition: all 0.2s;
-    }
-    .toolbar-title::selection {
-      background: $secondary;
     }
     .toolbar-title-enter {
       transform: translateX(0);
@@ -96,13 +92,13 @@
   //   }
   // }
 }
-.enter-account-btn {
+.header-btn {
   border-radius: 100px;
   letter-spacing: normal;
   transition: all 0.1s;
   font-size: 1.7rem !important;
 }
-.enter-account-btn:hover {
+.account-btn:hover {
   scale: 1.1;
 }
 
