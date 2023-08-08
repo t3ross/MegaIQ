@@ -225,15 +225,15 @@ export default defineComponent({
       goToHome: () => {
         router.push({ name: 'home' });
       },
-      // goToLogin: () => {
-      //   router.push({ name: 'login' });
-      // },
-      // goToRegister: () => {
-      //   router.push({ name: 'register' });
-      // },
-      // goToServices: () => {
-      //   router.push({ name: 'services' });
-      // },
+      goToLogin: () => {
+        router.push({ name: 'login' });
+      },
+      goToRegister: () => {
+        router.push({ name: 'register' });
+      },
+      goToServices: () => {
+        router.push({ name: 'services' });
+      },
     };
   },
 });

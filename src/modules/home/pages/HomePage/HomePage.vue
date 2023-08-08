@@ -49,13 +49,13 @@
           <q-btn
             class="header-btn account-btn toolbar-btn toolbar-login text-uppercase"
             ref="toolbarButtonLogin"
-            to="/auth/login"
+            @click="goToLogin"
             label="Inicia sesión!"
             unelevated />
           <q-btn
             class="header-btn account-btn toolbar-btn toolbar-register justify-center"
             ref="toolbarButtonRegister"
-            to="/auth/register"
+            @click="goToRegister"
             color="primary"
             label="Registrate!" />
         </div>
@@ -104,7 +104,7 @@
             </template>
             <q-btn
               class="header-btn"
-              to="/results/services"
+              @click="goToServices"
               label="Servicios de pago"
               color="primary" />
           </q-input>
@@ -114,12 +114,12 @@
           class="header-banner-btns text-font-medium flex flex-center q-gutter-x-md">
           <q-btn
             class="header-btn account-btn"
-            to="/auth/login"
+            @click="goToLogin"
             label="Inicia sesión!"
             unelevated />
           <q-btn
             class="header-btn account-btn"
-            to="/auth/login"
+            @click="goToRegister"
             label="Registrate!"
             color="primary" />
         </div>
@@ -144,7 +144,7 @@
 
         <div class="friend-lateral laterals q-pa-md">
           <p class="text-h4 text-white text-weight-regular">Amigos</p>
-
+          <!-- No friends  -->
           <div
             v-if="friendsList.length === 0"
             class="no-friends column flex-center">
@@ -159,7 +159,7 @@
               spinner-size="82px"
               alt="No friends image" />
           </div>
-
+          <!-- Friends -->
           <q-list class="friend-list" v-else>
             <q-item
               clickable
@@ -263,7 +263,7 @@
               class="filterContent-option col column flex-center filterContent-top white-border"
               stack
               unelevated>
-              <span class="fa-solid fa-fire"></span>
+              <span class="filter-icon fa-solid fa-fire"></span>
               Top
             </q-btn>
             <q-btn
@@ -271,7 +271,7 @@
               class="filterContent-option col column flex-center filterContent-recent white-border"
               stack
               unelevated>
-              <span class="fa-solid fa-star"></span>
+              <span class="filter-icon fa-solid fa-star"></span>
               Recientes
             </q-btn>
             <q-btn
@@ -279,7 +279,7 @@
               class="filterContent-option col column flex-center filterContent-more white-border"
               stack
               unelevated>
-              <span class="fa-solid fa-compass"></span>
+              <span class="filter-icon fa-solid fa-compass"></span>
               Descubrir
             </q-btn>
             <q-btn
@@ -287,7 +287,7 @@
               class="filterContent-option col column flex-center filterContent-voted white-border"
               stack
               unelevated>
-              <span class="fa-solid fa-users"></span>
+              <span class="filter-icon fa-solid fa-users"></span>
               Siguiendo
             </q-btn>
           </div>
