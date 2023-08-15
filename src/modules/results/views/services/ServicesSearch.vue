@@ -1,10 +1,6 @@
 <script lang="ts" src="./Services.ts" />
 
 <template>
-  <!-- ----------Header---------- -->
-
-  <!-- Banner -->
-
   <!-- ----------Main---------- -->
 
   <div class="layout-container flex flex-center full-height q-py-md">
@@ -227,16 +223,51 @@
             <q-separator class="blog-header-separator q-mt-md" dark />
             <!-- Post body -->
             <div class="row flex-center">
+              <!-- Post Image -->
               <img
                 :src="post.postImage"
                 :alt="post.postTitle + 'image'"
                 width="530"
                 class="bg-grey-1 q-my-lg q-pa-sm" />
+              <!-- Post Content -->
               <div>
                 {{ postContentFilter(post.postContent) }}
               </div>
+              <!-- Post cart button -->
+              <q-btn
+                push
+                :loading="loading[post.postId]"
+                @click="simulateProgress(post.postId, post.postId)"
+                @mouseover="changeIconToTrash(post.postId, true)"
+                @mouseleave="changeIconToTrash(post.postId, false)"
+                class="q-ma-md q-py-sm"
+                color="primary"
+                :icon="post.cartButtonIcon"
+                :label="post.cartButtonMessage">
+                <template v-slot:loading>
+                  <q-spinner-hourglass class="on-left" />
+                  Cargando...
+                </template>
+              </q-btn>
             </div>
           </div>
+          <!-- Cart FAB -->
+          <q-page-sticky position="bottom-right" :offset="[18, 18]" expand>
+            <q-btn
+              round
+              icon="fa-solid fa-cart-shopping"
+              color="primary"
+              class="q-pa-lg"
+              size="lg" />
+            <q-btn
+              round
+              unelevated
+              color="primary"
+              class="fixed q-mb-lg q-ml-lg"
+              size="xs"
+              ><div class="text-h6">{{ cartTotalProducts }}</div></q-btn
+            >
+          </q-page-sticky>
         </div>
       </q-page-container>
     </q-layout>

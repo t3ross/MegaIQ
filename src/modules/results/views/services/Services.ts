@@ -1,5 +1,4 @@
-import { QBtn } from 'quasar';
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -35,9 +34,12 @@ export default defineComponent({
       postImage: string;
       postDescription: string;
       postContent: string;
-    }[] = [
+      cartButtonIcon: string;
+      cartButtonMessage: string;
+      addedToCart: boolean;
+    }[] = reactive([
       {
-        postId: 1,
+        postId: 0,
         postTitle: 'Curso de Vue',
         postAuthor: 'Sebastián López',
         postAuthorPfp:
@@ -51,6 +53,9 @@ export default defineComponent({
           'Guía básica para entender los conceptos principales de trigonometría.',
         postContent:
           'Anim mollit proident deserunt est excepteur reprehenderit eu cupidatat id cupidatat. Voluptate dolore tempor laboris nostrud proident quis Lorem eiusmod. Duis veniam proident velit cillum ut irure velit excepteur do ipsum. Sint consectetur tempor eiusmod deserunt laboris. In consectetur Lorem nulla culpa. Est dolore cupidatat aute eiusmod in consectetur incididunt fugiat est nulla ea adipisicing.',
+        cartButtonIcon: 'fa-solid fa-plus',
+        cartButtonMessage: 'Añadir al carrito',
+        addedToCart: false,
       },
       {
         postId: 1,
@@ -67,9 +72,12 @@ export default defineComponent({
           'Guía básica para entender los conceptos principales de trigonometría.',
         postContent:
           'Anim mollit proident deserunt est excepteur reprehenderit eu cupidatat id cupidatat. Voluptate dolore tempor laboris nostrud proident quis Lorem eiusmod. Duis veniam proident velit cillum ut irure velit excepteur do ipsum. Sint consectetur tempor eiusmod deserunt laboris. In consectetur Lorem nulla culpa. Est dolore cupidatat aute eiusmod in consectetur incididunt fugiat est nulla ea adipisicing.',
+        cartButtonIcon: 'fa-solid fa-plus',
+        cartButtonMessage: 'Añadir al carrito',
+        addedToCart: false,
       },
       {
-        postId: 1,
+        postId: 2,
         postTitle: 'Modificar plantillas de SENA',
         postAuthor: 'Andres Walteros',
         postAuthorPfp: 'https://i.ytimg.com/vi/mwK2IslAQIo/maxresdefault.jpg',
@@ -82,8 +90,11 @@ export default defineComponent({
           'Guía básica para entender los conceptos principales de trigonometría.',
         postContent:
           'Anim mollit proident deserunt est excepteur reprehenderit eu cupidatat id cupidatat. Voluptate dolore tempor laboris nostrud proident quis Lorem eiusmod. Duis veniam proident velit cillum ut irure velit excepteur do ipsum. Sint consectetur tempor eiusmod deserunt laboris. In consectetur Lorem nulla culpa. Est dolore cupidatat aute eiusmod in consectetur incididunt fugiat est nulla ea adipisicing.',
+        cartButtonIcon: 'fa-solid fa-plus',
+        cartButtonMessage: 'Añadir al carrito',
+        addedToCart: false,
       },
-    ];
+    ]);
     const friendsList: {
       friendId: number;
       friendName: string;
@@ -110,10 +121,56 @@ export default defineComponent({
       //   friendMsgSeen: false,
       // },
     ];
+
+    const loading = ref([false]);
+
+    const cartTotalProducts = ref(0);
+
     const postContentFilter = function (postContent: string) {
       return postContent.length > 300
         ? postContent.substring(0, 300) + '...'
         : postContent;
+    };
+    const simulateProgress = (number: number, postId: number) => {
+      // we set loading state
+      loading.value[number] = true;
+      // loading.value = [true];
+      console.log(number);
+
+      // simulate a delay
+      setTimeout(() => {
+        // we're done, we reset loading state
+        loading.value[number] = false;
+        cartMovement(postId);
+      }, 1000);
+    };
+
+    const cartMovement = (postId: number) => {
+      if (mainPosts[postId].addedToCart) {
+        mainPosts[postId].cartButtonIcon = 'fa-solid fa-plus';
+        mainPosts[postId].cartButtonMessage = 'Añadir al carrito';
+        cartTotalProducts.value--;
+        mainPosts[postId].addedToCart = false;
+      } else {
+        mainPosts[postId].cartButtonIcon = 'check';
+        mainPosts[postId].cartButtonMessage = 'Añadido al carrito';
+        cartTotalProducts.value++;
+        mainPosts[postId].addedToCart = true;
+      }
+    };
+
+    const changeIconToTrash = (postId: number, change: boolean) => {
+      if (mainPosts[postId].addedToCart) {
+        if (change) {
+          console.log({ change, postId });
+          mainPosts[postId].cartButtonIcon = 'fa-solid fa-trash';
+          mainPosts[postId].cartButtonMessage = 'Eliminar del carrito';
+        } else {
+          console.log(change);
+          mainPosts[postId].cartButtonIcon = 'check';
+          mainPosts[postId].cartButtonMessage = 'Añadido al carrito';
+        }
+      }
     };
 
     return {
@@ -164,9 +221,15 @@ export default defineComponent({
           value: 'economy',
         },
       ],
+
       goToHome: () => {
         router.push({ name: 'home' });
       },
+      loading,
+      simulateProgress,
+      changeIconToTrash,
+      cartTotalProducts,
+
       // goToLogin: () => {
       //   router.push({ name: 'login' });
       // },
