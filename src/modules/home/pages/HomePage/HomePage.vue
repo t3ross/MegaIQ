@@ -85,6 +85,7 @@
       instructores sobre temas académicos. MegaIQ está diseñado para
       complementar y mejorar tu aprendizaje escolar!
     </p>
+    <q-btn push color="primary" label="Conócenos aquí!" @click="goToMeetUs" />
     <!-- Toolbar -->
     <div class="flex justify-center items-end col full-width non-selectable">
       <q-toolbar class="header-banner-toolbar q-gutter-x-md q-pb-lg">

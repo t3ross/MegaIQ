@@ -2,6 +2,7 @@
 import authRouter from 'src/modules/auth/router';
 import resultsRouter from 'src/modules/results/router';
 import accountRouter from 'src/modules/account/router';
+import meetusRouter from 'src/modules/meetus/router';
 
 const routes = [
   {
@@ -25,6 +26,10 @@ const routes = [
       {
         path: '/results',
         ...resultsRouter,
+      },
+      {
+        path: '/meetus',
+        ...meetusRouter,
       },
     ],
   },

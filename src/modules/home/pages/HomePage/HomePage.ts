@@ -234,6 +234,9 @@ export default defineComponent({
       goToServices: () => {
         router.push({ name: 'services' });
       },
+      goToMeetUs: () => {
+        router.push({ name: 'meetus' });
+      },
     };
   },
 });
