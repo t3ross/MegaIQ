@@ -9,6 +9,7 @@
       <q-toolbar-title shrink class="col-1-md-1">
         <div ref="toolbarTitle" class="toolbar-title-home header-font">
           <q-img
+            class="c-pointer"
             @click="goToHome"
             src="~assets/MegaIQ.svg"
             width="150px"
@@ -70,7 +71,9 @@
     ref="headerBanner"
     @mousemove="headerBannerParallax">
     <!-- Logo -->
-    <div class="flex items-end col" ref="headerBannerTitle">
+    <div
+      class="headerBannerLogo flex items-end col c-pointer"
+      ref="headerBannerTitle">
       <q-img
         src="~assets/MegaIQ.svg"
         width="380px"
@@ -80,7 +83,7 @@
         spinner-size="82px"
         alt="MegaIQ logo" />
     </div>
-    <p class="header-text text-body1 text-font-medium">
+    <p class="header-text text-body1 text-font-medium text-md">
       Repasa conceptos, aprende cosas nuevas y comparte con demás estudiantes e
       instructores sobre temas académicos. MegaIQ está diseñado para
       complementar y mejorar tu aprendizaje escolar!

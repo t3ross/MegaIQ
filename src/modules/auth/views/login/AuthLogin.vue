@@ -1,6 +1,7 @@
 <script lang="ts" src="./Login.ts" />
 
 <template>
+  <!-- Logo -->
   <div class="auth-title header-font flex flex-center">
     Mega<span class="iq-background"><span class="iq">IQ</span></span>
   </div>

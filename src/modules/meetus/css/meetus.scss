@@ -5,3 +5,19 @@
   width: 100%;
   max-width: 280px;
 }
+
+.cardImg {
+  background-image: url(~assets/red-blue-bg.png);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.img1 {
+  background-position: 0 100%;
+}
+.img2 {
+  background-position: 50% 100%;
+}
+.img3 {
+  background-position: 100% 100%;
+}
