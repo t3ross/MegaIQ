@@ -1,13 +1,21 @@
-<script lang="ts" src="./Register.ts" />
-
 <template>
-  <div class="auth-title header-font flex flex-center">
-    Mega<span class="iq-background"><span class="iq">IQ</span></span>
-  </div>
-  <q-form @submit="createAccount" @reset="onReset" class="auth auth-regsiter">
+  <q-form
+    @submit="enterAccount"
+    @reset="onReset"
+    class="auth auth-register q-pb-lg q-pt-sm bg-white">
+    <div class="flex col justify-end q-pr-sm q-pb-sm">
+      <q-btn
+        unelevated
+        round
+        class="text-primary"
+        icon="fa-solid fa-x"
+        size="12px"
+        v-close-popup />
+    </div>
     <q-input
-      class="auth-input"
+      class="auth-input q-px-lg q-pb-lg"
       filled
+      type="email"
       v-model="state.name"
       label="Tu nombre de usuario"
       :rules="[
@@ -17,7 +25,7 @@
           'Por favor escribe un nombre con mínimo 3 carácteres.',
       ]" />
     <q-input
-      class="auth-input"
+      class="auth-input q-px-lg q-pb-lg"
       filled
       type="email"
       v-model="state.email"
@@ -30,11 +38,11 @@
           rules.email(val) || 'Por favor escribe un correo electrónico válido',
       ]" />
     <q-input
-      class="auth-input"
+      class="auth-input q-px-lg q-pb-lg"
       filled
       :type="isPwd1 ? 'password' : 'text'"
       v-model="state.password.password"
-      label="Escribe una  contraseña"
+      label="Escribe tu contraseña"
       :rules="[
         (val) =>
           (val && val.length !== 0) || 'Por favor escribe una contraseña',
@@ -47,15 +55,15 @@
       ]">
       <template v-slot:append v-if="state.password.password">
         <q-icon
-          :name="isPwd1 ? 'visibility_off' : 'visibility'"
+          :name="isPwd ? 'visibility_off' : 'visibility'"
           class="cursor-pointer"
-          @mousedown="isPwd1 = false"
-          @mouseleave="isPwd1 = true"
-          @mouseup="isPwd1 = true" />
+          @mousedown="isPwd = false"
+          @mouseleave="isPwd = true"
+          @mouseup="isPwd = true" />
       </template>
     </q-input>
     <q-input
-      class="auth-input"
+      class="auth-input q-px-lg"
       filled
       :type="isPwd2 ? 'password' : 'text'"
       v-model="state.password.confirm"
@@ -77,23 +85,59 @@
           @mouseup="isPwd2 = true" /> </template
     ></q-input>
     <q-toggle
-      class="auth-input"
+      class="auth-input q-px-lg q-pb-md"
       v-model="state.accept"
       label="Acepto los términos y condiciones" />
 
-    <router-link class="auth-input auth-link" :to="{ name: 'login' }"
-      >¿Ya tienes cuenta?
-      <span class="text-primary">Inicia sesión</span></router-link
-    >
+    <!-- <div class="q-px-lg c-pointer" v-close-popup>
+      ¿No tienes cuenta?
+      <span class="text-primary">Inicia sesión</span>
+    </div> -->
 
-    <div>
-      <q-btn label="Acceder" type="submit" color="primary" />
+    <div class="flex col justify-end q-px-lg q-gutter-sm">
       <q-btn
         label="Vaciar campos"
         type="reset"
         color="primary"
         flat
         class="q-ml-sm" />
+      <q-btn unelevated label="Acceder" type="submit" color="primary" />
     </div>
   </q-form>
 </template>
+
+<script>
+import { defineComponent, ref } from 'vue';
+import useAuth from 'src/composables/useAuth';
+
+export default defineComponent({
+  name: 'AuthRegister',
+
+  setup() {
+    const { state, enterAccount, onReset, isPwd } = useAuth();
+
+    return {
+      state,
+      enterAccount,
+      isPwd,
+      onReset,
+      letterNumber: ref('(?=[A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]'),
+      isPwd1: ref(true),
+      isPwd2: ref(true),
+    };
+  },
+});
+</script>
+
+<style lang="scss">
+@import 'src/css/quasar.variables.scss';
+
+.auth {
+  border-radius: 8px;
+  width: 500px;
+}
+.auth-link:active {
+  color: $primary;
+  text-decoration: underline;
+}
+</style>

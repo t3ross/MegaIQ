@@ -1,11 +1,14 @@
 import { QBtn } from 'quasar';
 import { defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import FriendsAside from 'components/FriendsAside.vue';
+import LogIn from 'src/components/LogIn.vue';
+import Register from 'src/components/Register.vue';
 
 export default defineComponent({
   name: 'MainLayout',
 
-  components: {},
+  components: { FriendsAside, LogIn, Register },
 
   props: {
     // mainPosts: {
@@ -23,6 +26,7 @@ export default defineComponent({
   setup() {
     // TODO: Define variables with <>
     const router = useRouter();
+
     const headerBanner = ref();
     const headerBannerTitle = ref();
     const toolbarTitle = ref();
@@ -117,6 +121,36 @@ export default defineComponent({
       //   friendMsgSeen: false,
       // },
     ];
+    const filterSubjects: { label: string; value: string }[] = [
+      {
+        label: 'Matemáticas',
+        value: 'math',
+      },
+      {
+        label: 'Biología',
+        value: 'biology',
+      },
+      {
+        label: 'Química',
+        value: 'chemistry',
+      },
+      {
+        label: 'Física',
+        value: 'physics',
+      },
+      {
+        label: 'Geografía',
+        value: 'geography',
+      },
+      {
+        label: 'Artes',
+        value: 'art',
+      },
+      {
+        label: 'Economía',
+        value: 'economy',
+      },
+    ];
 
     const headerBannerParallax = (event: MouseEvent) => {
       // TODO: Fix this sht
@@ -143,7 +177,7 @@ export default defineComponent({
     onMounted(() => {
       const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          toolbarTitle.value.classList.remove('toolbar-title-enter');
+          toolbarTitle.value?.classList.remove('toolbar-title-enter');
           toolbarButtonLogin.value?.$el.classList.remove('toolbar-btn-enter');
           toolbarButtonRegister.value?.$el.classList.remove(
             'toolbar-btn-enter'
@@ -165,6 +199,7 @@ export default defineComponent({
       const header = document.querySelector('.header-banner-toolbar');
       observer.observe(header as Element);
     });
+    // Auth dialogs
 
     return {
       mainPosts,
@@ -192,36 +227,7 @@ export default defineComponent({
         },
       ],
 
-      filterSubjects: [
-        {
-          label: 'Matemáticas',
-          value: 'math',
-        },
-        {
-          label: 'Biología',
-          value: 'biology',
-        },
-        {
-          label: 'Química',
-          value: 'chemistry',
-        },
-        {
-          label: 'Física',
-          value: 'physics',
-        },
-        {
-          label: 'Geografía',
-          value: 'geography',
-        },
-        {
-          label: 'Artes',
-          value: 'art',
-        },
-        {
-          label: 'Economía',
-          value: 'economy',
-        },
-      ],
+      filterSubjects,
       goToHome: () => {
         router.push({ name: 'home' });
       },
@@ -236,6 +242,11 @@ export default defineComponent({
       },
       goToMeetUs: () => {
         router.push({ name: 'meetus' });
+      },
+      logIn: ref(false),
+      register: ref(false),
+      dd: () => {
+        console.log('d');
       },
     };
   },

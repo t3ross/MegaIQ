@@ -63,10 +63,13 @@ body {
 }
 .header-btn {
   border-radius: 100px;
-  letter-spacing: normal;
   transition: all 0.1s;
-  font-size: 1.7rem !important;
+  font-size: 1.7rem;
 }
+#switch-btn {
+  font-size: 1.4rem;
+}
+
 .account-btn:hover {
   scale: 1.1;
 }

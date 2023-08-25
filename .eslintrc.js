@@ -27,6 +27,7 @@ module.exports = {
     // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#usage
     // ESLint typescript rules
     'plugin:@typescript-eslint/recommended',
+    'plugin:vue/base',
 
     // Uncomment any of the lines below to choose desired strictness,
     // but leave only one uncommented!

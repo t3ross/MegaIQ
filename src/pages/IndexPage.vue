@@ -1,6 +1,4 @@
-<template>
-  <q-page class="flex flex-center"> </q-page>
-</template>
+<template><div></div></template>
 
 <script>
 import { defineComponent } from 'vue';
