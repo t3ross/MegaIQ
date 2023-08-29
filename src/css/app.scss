@@ -21,6 +21,7 @@ body {
   backdrop-filter: blur(10px);
   background-color: rgba($primary, 0.5);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  height: 80px;
   .header {
     height: 80px;
 
@@ -217,5 +218,8 @@ body {
 }
 .white-border {
   border: 1px solid $white;
+  border-radius: 8px;
+}
+.round-border {
   border-radius: 8px;
 }

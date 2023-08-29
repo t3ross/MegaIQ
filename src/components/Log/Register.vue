@@ -1,6 +1,6 @@
 <template>
   <q-form
-    @submit="enterAccount"
+    @submit.prevent="onSubmit"
     @reset="onReset"
     class="auth auth-register q-pb-lg q-pt-sm bg-white">
     <div class="flex col justify-end q-pr-sm q-pb-sm">
@@ -15,8 +15,8 @@
     <q-input
       class="auth-input q-px-lg q-pb-lg"
       filled
-      type="email"
-      v-model="state.name"
+      type="text"
+      v-model="state.username"
       label="Tu nombre de usuario"
       :rules="[
         (val) => (val && val.length > 0) || 'Por favor escribe algún nombre',
@@ -41,7 +41,7 @@
       class="auth-input q-px-lg q-pb-lg"
       filled
       :type="isPwd1 ? 'password' : 'text'"
-      v-model="state.password.password"
+      v-model="state.password"
       label="Escribe tu contraseña"
       :rules="[
         (val) =>
@@ -66,14 +66,14 @@
       class="auth-input q-px-lg"
       filled
       :type="isPwd2 ? 'password' : 'text'"
-      v-model="state.password.confirm"
+      v-model="state.passwordConfirm"
       label="Repite la contraseña"
       :rules="[
         (val) =>
           (val && val.length !== 0) ||
           'Por favor escribe la contraseña nuevamente',
         (val) =>
-          val === state.password.password ||
+          val === state.password ||
           'Las contraseñas no coinciden. Por favor escribe la contraseña nuevamente',
       ]"
       ><template v-slot:append v-if="state.password.confirm">
@@ -101,7 +101,7 @@
         color="primary"
         flat
         class="q-ml-sm" />
-      <q-btn unelevated label="Acceder" type="submit" color="primary" />
+      <q-btn unelevated label="Crear cuenta" type="submit" color="primary" />
     </div>
   </q-form>
 </template>
@@ -114,16 +114,20 @@ export default defineComponent({
   name: 'AuthRegister',
 
   setup() {
-    const { state, enterAccount, onReset, isPwd } = useAuth();
+    const { state, onReset, isPwd, createUser } = useAuth();
 
     return {
       state,
-      enterAccount,
+      createUser,
       isPwd,
       onReset,
       letterNumber: ref('(?=[A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]'),
       isPwd1: ref(true),
       isPwd2: ref(true),
+
+      onSubmit: async () => {
+        createUser(state.value);
+      },
     };
   },
 });

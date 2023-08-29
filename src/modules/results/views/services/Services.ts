@@ -229,16 +229,6 @@ export default defineComponent({
       simulateProgress,
       changeIconToTrash,
       cartTotalProducts,
-
-      // goToLogin: () => {
-      //   router.push({ name: 'login' });
-      // },
-      // goToRegister: () => {
-      //   router.push({ name: 'register' });
-      // },
-      // goToServices: () => {
-      //   router.push({ name: 'services' });
-      // },
     };
   },
 });

@@ -1,5 +1,4 @@
 // import { RouteRecordRaw } from 'vue-router';
-import authRouter from 'src/modules/auth/router';
 import resultsRouter from 'src/modules/results/router';
 import accountRouter from 'src/modules/account/router';
 import meetusRouter from 'src/modules/meetus/router';
@@ -14,10 +13,6 @@ const routes = [
         path: '',
         name: 'home',
         component: () => import('src/modules/home/pages/HomePage/HomePage.vue'),
-      },
-      {
-        path: '/auth',
-        ...authRouter,
       },
       {
         path: '/account',

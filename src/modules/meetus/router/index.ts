@@ -1,8 +1,8 @@
 export default {
-  name: 'meetus',
+  name: 'meetuss',
   component: () =>
     import(
-      /* webpackChunkName: "home" */ 'src/modules/meetus/layouts/MeetUsLayout.vue'
+      /* webpackChunkName: "Meetus" */ 'src/modules/meetus/layouts/MeetUsLayout.vue'
     ),
   children: [
     {
@@ -10,7 +10,7 @@ export default {
       name: 'meetus',
       component: () =>
         import(
-          /* webpackChunkName: "Meet Us" */ 'src/modules/meetus/pages/MeetUs/MeetUs.vue'
+          /* webpackChunkName: "Meet Us" */ 'src/modules/meetus/views/MeetUs.vue'
         ),
     },
   ],

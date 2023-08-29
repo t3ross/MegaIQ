@@ -2,7 +2,7 @@ export default {
   name: 'results',
   component: () =>
     import(
-      /* webpackChunkName: "authlayout" */ 'src/modules/results/layouts/ResultsLayout.vue'
+      /* webpackChunkName: "resultsLayout" */ 'src/modules/results/layouts/ResultsLayout.vue'
     ),
   children: [
     {

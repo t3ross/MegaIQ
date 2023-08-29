@@ -2,8 +2,8 @@ import { QBtn } from 'quasar';
 import { defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import FriendsAside from 'components/FriendsAside.vue';
-import LogIn from 'src/components/LogIn.vue';
-import Register from 'src/components/Register.vue';
+import LogIn from 'src/components/Log/LogIn.vue';
+import Register from 'src/components/Log/Register.vue';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -184,10 +184,10 @@ export default defineComponent({
           );
           toolbarSearchBar.value.classList.remove('toolbar-searchBar-enter');
         } else {
-          toolbarTitle.value.classList.add('toolbar-title-enter');
+          toolbarTitle.value?.classList.add('toolbar-title-enter');
           toolbarButtonLogin.value?.$el.classList.add('toolbar-btn-enter');
           toolbarButtonRegister.value?.$el.classList.add('toolbar-btn-enter');
-          toolbarSearchBar.value.classList.add('toolbar-searchBar-enter');
+          toolbarSearchBar.value?.classList.add('toolbar-searchBar-enter');
 
           // toolbarSearchBar.value.classList.remove('toolbar-searchBar');
           // toolbarSearchBar.value?.$el.classList.remove('toolbar-searchBar');
