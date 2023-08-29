@@ -47,22 +47,6 @@ const useAuth = () => {
     });
   };
 
-  // const createAccount = () => {
-  if (state.value.accept !== true) {
-    Notify.create({
-      color: 'orange-6',
-      textColor: 'white',
-      icon: 'warning',
-      message: 'Necesitas aceptar los términos y condiciones primero',
-    });
-  } else {
-    Notify.create({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Creando cuenta',
-    });
-  }
   // };
 
   const onReset = () => {

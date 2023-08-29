@@ -126,6 +126,7 @@ export default defineComponent({
       isPwd2: ref(true),
 
       onSubmit: async () => {
+        console.log('ds');
         createUser(state.value);
       },
     };

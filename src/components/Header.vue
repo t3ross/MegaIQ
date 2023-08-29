@@ -42,14 +42,12 @@
             v-else
             class="row q-gutter-x-sm text-font-medium row flex-center no-wrap q-pr-md">
             <q-btn
-              class="header-btn account-btn toolbar-login text-uppercase"
-              ref="toolbarButtonLogin"
+              class="header-btn account-btn toolbar-login"
               @click="logIn = true"
               label="Inicia sesión!"
               unelevated />
             <q-btn
-              class="header-btn account-btn toolbar-register justify-center"
-              ref="toolbarButtonRegister"
+              class="header-btn account-btn toolbar-register"
               @click="register = true"
               color="primary"
               label="Registrate!" />
