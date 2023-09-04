@@ -1,16 +1,8 @@
 import { Notify } from 'quasar';
 import { ref } from 'vue';
-import useAuthStore from 'src/stores/auth';
+import { useAuthStore } from 'src/stores/authStore';
 
 const useAuth = () => {
-  const state = ref({
-    username: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    accept: false,
-  });
-
   const authStore = useAuthStore();
 
   const createUser = async (user: {
@@ -19,7 +11,7 @@ const useAuth = () => {
     password: string;
     accept: boolean;
   }) => {
-    if (state.value.accept !== true) {
+    if (user.accept !== true) {
       Notify.create({
         color: 'orange-6',
         textColor: 'white',
@@ -27,42 +19,28 @@ const useAuth = () => {
         message: 'Necesitas aceptar los términos y condiciones primero',
       });
     } else {
-      Notify.create({
-        color: 'green-4',
-        textColor: 'white',
-        icon: 'cloud_done',
-        message: 'Creando cuenta',
-      });
       const resp = await authStore.createUser(user);
       return resp;
     }
   };
 
-  const enterUser = () => {
-    Notify.create({
-      color: 'primary',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Accediendo a cuenta',
-    });
+  const loginUser = async (user: {
+    username: string;
+    email: string;
+    password: string;
+    accept: boolean;
+  }) => {
+    const resp = await authStore.signInUser(user);
+    return resp;
   };
 
   // };
 
-  const onReset = () => {
-    state.value.username = '';
-    state.value.email = '';
-    state.value.password = '';
-    state.value.passwordConfirm = '';
-    state.value.accept = false;
-  };
-
   return {
-    state,
-    enterUser,
+    authStore,
     createUser,
+    loginUser,
     isPwd: ref(true),
-    onReset,
   };
 };
 

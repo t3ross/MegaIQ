@@ -1,8 +1,9 @@
 <template>
   <q-form
-    @submit="enterAccount"
+    @submit.prevent="onSubmit"
     @reset="onReset"
     class="auth auth-login q-pb-lg q-pt-sm bg-white">
+    <!-- X button -->
     <div class="flex col justify-end q-pr-sm q-pb-sm">
       <q-btn
         unelevated
@@ -12,11 +13,12 @@
         size="12px"
         v-close-popup />
     </div>
+    <!-- Inputs -->
     <q-input
       class="auth-input q-px-lg q-pb-lg"
       filled
       type="email"
-      v-model="state.email"
+      v-model="userForm.email"
       label="Tu correo electrónico"
       :rules="[
         (val) =>
@@ -30,14 +32,14 @@
       class="auth-input q-px-lg q-pb-lg"
       filled
       :type="isPwd ? 'password' : 'text'"
-      v-model="state.password.password"
+      v-model="userForm.password"
       label="Escribe tu contraseña"
       :rules="[
         (val) =>
           (val && val.length !== 0) || 'Por favor escribe una contraseña',
         // TODO: Match the passwords
       ]">
-      <template v-slot:append v-if="state.password.password">
+      <template v-slot:append v-if="userForm.password">
         <q-icon
           :name="isPwd ? 'visibility_off' : 'visibility'"
           class="cursor-pointer"
@@ -67,18 +69,50 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import useAuth from 'src/composables/useAuth';
+import { Notify } from 'quasar';
+
 export default defineComponent({
   name: 'AuthLogin',
   setup() {
-    const { state, enterAccount, onReset, isPwd } = useAuth();
+    const { loginUser, isPwd } = useAuth();
+    const userForm = ref({
+      email: '',
+      password: '',
+    });
+    const onReset = () => {
+      userForm.value.username = '';
+      userForm.value.email = '';
+      userForm.value.password = '';
+      userForm.value.passwordConfirm = '';
+      userForm.value.accept = false;
+    };
 
     return {
-      state,
-      enterAccount,
+      userForm,
+      loginUser,
       isPwd,
       onReset,
+      onSubmit: async () => {
+        const { ok, message } = await loginUser(userForm.value);
+
+        if (!ok) {
+          Notify.create({
+            color: 'negative',
+            textColor: 'white',
+            icon: 'error',
+            message: message,
+          });
+        } else {
+          Notify.create({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'check',
+            message: 'Accediendo a cuenta',
+          });
+        }
+      },
     };
   },
 });

@@ -3,6 +3,7 @@
     @submit.prevent="onSubmit"
     @reset="onReset"
     class="auth auth-register q-pb-lg q-pt-sm bg-white">
+    <!-- X button -->
     <div class="flex col justify-end q-pr-sm q-pb-sm">
       <q-btn
         unelevated
@@ -12,11 +13,12 @@
         size="12px"
         v-close-popup />
     </div>
+    <!-- Inputs -->
     <q-input
       class="auth-input q-px-lg q-pb-lg"
       filled
       type="text"
-      v-model="state.username"
+      v-model="userForm.username"
       label="Tu nombre de usuario"
       :rules="[
         (val) => (val && val.length > 0) || 'Por favor escribe algún nombre',
@@ -28,7 +30,7 @@
       class="auth-input q-px-lg q-pb-lg"
       filled
       type="email"
-      v-model="state.email"
+      v-model="userForm.email"
       label="Tu correo electrónico"
       :rules="[
         (val) =>
@@ -41,7 +43,7 @@
       class="auth-input q-px-lg q-pb-lg"
       filled
       :type="isPwd1 ? 'password' : 'text'"
-      v-model="state.password"
+      v-model="userForm.password"
       label="Escribe tu contraseña"
       :rules="[
         (val) =>
@@ -53,7 +55,7 @@
           val.match(letterNumber) ||
           'Por favor escribe por lo menos un número y una letra',
       ]">
-      <template v-slot:append v-if="state.password.password">
+      <template v-slot:append v-if="userForm.password">
         <q-icon
           :name="isPwd ? 'visibility_off' : 'visibility'"
           class="cursor-pointer"
@@ -66,17 +68,17 @@
       class="auth-input q-px-lg"
       filled
       :type="isPwd2 ? 'password' : 'text'"
-      v-model="state.passwordConfirm"
+      v-model="userForm.passwordConfirm"
       label="Repite la contraseña"
       :rules="[
         (val) =>
           (val && val.length !== 0) ||
           'Por favor escribe la contraseña nuevamente',
         (val) =>
-          val === state.password ||
+          val === userForm.password ||
           'Las contraseñas no coinciden. Por favor escribe la contraseña nuevamente',
       ]"
-      ><template v-slot:append v-if="state.password.confirm">
+      ><template v-slot:append v-if="userForm.passwordConfirm">
         <q-icon
           :name="isPwd2 ? 'visibility_off' : 'visibility'"
           class="cursor-pointer"
@@ -86,7 +88,7 @@
     ></q-input>
     <q-toggle
       class="auth-input q-px-lg q-pb-md"
-      v-model="state.accept"
+      v-model="userForm.accept"
       label="Acepto los términos y condiciones" />
 
     <!-- <div class="q-px-lg c-pointer" v-close-popup>
@@ -108,26 +110,56 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
+import { Notify } from 'quasar';
 import useAuth from 'src/composables/useAuth';
 
 export default defineComponent({
   name: 'AuthRegister',
 
   setup() {
-    const { state, onReset, isPwd, createUser } = useAuth();
+    const { isPwd, createUser } = useAuth();
+
+    const userForm = ref({
+      username: '',
+      email: '',
+      password: '',
+      passwordConfirm: '',
+      accept: false,
+    });
+    const onReset = () => {
+      userForm.value.username = '';
+      userForm.value.email = '';
+      userForm.value.password = '';
+      userForm.value.passwordConfirm = '';
+      userForm.value.accept = false;
+    };
 
     return {
-      state,
+      userForm,
       createUser,
       isPwd,
       onReset,
       letterNumber: ref('(?=[A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]'),
       isPwd1: ref(true),
       isPwd2: ref(true),
-
       onSubmit: async () => {
-        console.log('ds');
-        createUser(state.value);
+        const { ok, message } = await createUser(userForm.value);
+
+        if (!ok) {
+          Notify.create({
+            color: 'negative',
+            textColor: 'white',
+            icon: 'error',
+            message: message,
+          });
+        } else {
+          Notify.create({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: 'Creando cuenta',
+          });
+        }
       },
     };
   },
