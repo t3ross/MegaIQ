@@ -3,9 +3,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import useAuth from './composables/useAuth';
 
-export default defineComponent({
+export default {
   name: 'App',
-});
+  setup() {
+    const { authStatus, checkAuthStatus } = useAuth();
+
+    checkAuthStatus();
+    return {
+      authStatus,
+    };
+  },
+};
 </script>

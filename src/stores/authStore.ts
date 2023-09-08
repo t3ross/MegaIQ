@@ -16,7 +16,14 @@ export const useAuthStore = defineStore('Auth', {
     refreshToken: '',
   }),
 
+  getters: {
+    currentState(): string {
+      return this.status;
+    },
+  },
   actions: {
+    // Actions
+    // Mutations
     async createUser(user: {
       username: string;
       email: string;
@@ -24,7 +31,6 @@ export const useAuthStore = defineStore('Auth', {
       accept: boolean;
     }) {
       const { username, email, password } = user;
-      console.log(username);
 
       try {
         const { data } = await authApi.post(':signUp', {
@@ -49,7 +55,7 @@ export const useAuthStore = defineStore('Auth', {
     },
 
     async signInUser(user: {
-      username?: string;
+      username: string;
       email: string;
       password: string;
     }) {
@@ -73,6 +79,35 @@ export const useAuthStore = defineStore('Auth', {
       }
     },
 
+    async checkAuthentication() {
+      const idToken = localStorage.getItem('idToken');
+      const refreshToken = localStorage.getItem('refreshToken');
+
+      if (!idToken) {
+        this.logout;
+        return { ok: false, message: 'No hay token' };
+      }
+
+      try {
+        const { data } = await authApi.post(':lookup', { idToken });
+        const { displayName, email } = data.users[0];
+
+        const user = {
+          name: displayName,
+          email,
+        };
+
+        this.loginUser(user, idToken, refreshToken as string);
+
+        return { ok: true };
+      } catch (error: any) {
+        this.logout;
+        return { ok: false, message: error.response.data.error.message };
+      }
+    },
+
+    //Mutations
+
     loginUser(username: object, idToken: string, refreshToken: string) {
       if (idToken) {
         localStorage.setItem('idToken', idToken);
@@ -84,7 +119,16 @@ export const useAuthStore = defineStore('Auth', {
       }
       this.username = username;
       this.status = 'authenticated';
-      console.log(this);
+    },
+    logout() {
+      this.username = {};
+      this.idToken = '';
+      this.refreshToken = '';
+      this.status = 'not-authenticated';
+
+      localStorage.removeItem('idToken');
+      localStorage.removeItem('refreshToken');
+      window.location.reload();
     },
   },
 });

@@ -117,7 +117,7 @@ export default defineComponent({
   name: 'AuthRegister',
 
   setup() {
-    const { isPwd, createUser } = useAuth();
+    const { isPwd, createUser, loginUser } = useAuth();
 
     const userForm = ref({
       username: '',
@@ -159,6 +159,11 @@ export default defineComponent({
             icon: 'cloud_done',
             message: 'Creando cuenta',
           });
+
+          await loginUser(userForm.value.email, userForm.value.password);
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         }
       },
     };

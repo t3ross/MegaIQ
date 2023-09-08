@@ -1,5 +1,5 @@
 import { Notify } from 'quasar';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useAuthStore } from 'src/stores/authStore';
 
 const useAuth = () => {
@@ -34,13 +34,21 @@ const useAuth = () => {
     return resp;
   };
 
+  const checkAuthStatus = async () => {
+    const resp = await authStore.checkAuthentication();
+    console.log(resp);
+    return resp;
+  };
+
   // };
 
   return {
     authStore,
+    checkAuthStatus,
     createUser,
     loginUser,
     isPwd: ref(true),
+    authStatus: computed(() => authStore.currentState),
   };
 };
 

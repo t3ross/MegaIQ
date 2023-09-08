@@ -33,7 +33,7 @@
         </div>
         <!-- Account -->
         <div class="column justify-end col-1-md-1">
-          <div v-if="userLogged">
+          <div v-if="ok2 == true">
             <q-btn dense flat round icon="las la-cog" />
             <q-btn dense flat round icon="las la-user-circle" />
           </div>
@@ -97,8 +97,9 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import useAuth from 'src/composables/useAuth';
 import LogIn from 'src/components/Log/LogIn.vue';
 import Register from 'src/components/Log/Register.vue';
 
@@ -110,6 +111,16 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const { checkAuthStatus } = useAuth();
+
+    const ok2 = ref();
+
+    onMounted(async () => {
+      const { ok } = await checkAuthStatus();
+      ok2.value = ok;
+      return ok2;
+    });
+
     return {
       goToHome: () => {
         router.push({ name: 'home' });
@@ -117,6 +128,7 @@ export default defineComponent({
       logIn: ref(false),
       register: ref(false),
       userLogged: ref(false),
+      ok2,
     };
   },
 });

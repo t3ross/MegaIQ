@@ -111,6 +111,10 @@ export default defineComponent({
             icon: 'check',
             message: 'Accediendo a cuenta',
           });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         }
       },
     };
